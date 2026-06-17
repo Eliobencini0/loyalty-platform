@@ -1,0 +1,28 @@
+node_modules
+dist
+# Keep environment variables out of version control
+.env
+
+/generated/prisma
+
+# Dashboard build output
+dashboard/dist
+dashboard/node_modules
+
+# Deploy env files (contain secrets)
+deploy/.env.staging
+deploy/.env.prod
+
+# Wallet certificates (do not commit)
+certs/
+*.p12
+*.pem
+*.key
+service-account.json
+
+# Local development artifacts
+.playwright-mcp/
+dev.db
+.claude/
+qa-artifacts/
+/tmp/*.log

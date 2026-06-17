@@ -1,0 +1,83 @@
+/* Shared layout primitives */
+
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 240px;
+  background: var(--background-surface);
+  border-right: 1px solid var(--border-default);
+  padding: var(--space-lg) 0;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar-brand {
+  padding: 0 var(--space-lg) var(--space-lg);
+  font-size: var(--text-lg);
+  font-weight: var(--weight-bold);
+  color: var(--interactive-default);
+  border-bottom: 1px solid var(--border-default);
+  margin-bottom: var(--space-md);
+}
+
+.sidebar-nav {
+  list-style: none;
+}
+
+.sidebar-nav a {
+  display: block;
+  padding: 0.625rem var(--space-lg);
+  color: var(--text-secondary);
+  font-weight: var(--weight-medium);
+  transition: background var(--duration-micro) var(--easing-default),
+              color var(--duration-micro) var(--easing-default);
+}
+
+.sidebar-nav a:hover,
+.sidebar-nav a.active {
+  background: var(--background-brandSubtle);
+  color: var(--interactive-default);
+  text-decoration: none;
+}
+
+.sidebar-footer {
+  margin-top: auto;
+  padding: var(--space-md) var(--space-lg);
+  border-top: 1px solid var(--border-default);
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+.locale-switcher {
+  margin-bottom: var(--space-sm);
+}
+
+.locale-switcher select {
+  width: 100%;
+  padding: 0.3rem var(--space-sm);
+  font-size: 0.8125rem;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  background: var(--background-surface);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.sidebar-footer button {
+  background: none;
+  border: none;
+  color: var(--text-error);
+  cursor: pointer;
+  font-size: var(--text-sm);
+  padding: 0;
+}
+
+.main-content {
+  flex: 1;
+  padding: var(--space-xl);
+  max-width: 1200px;
+}

@@ -1,0 +1,259 @@
+{
+  "nav": {
+    "brand": "Loyali",
+    "features": "Funcionalidades",
+    "pricing": "Precios",
+    "contact": "Contacto",
+    "login": "Iniciar sesión",
+    "cta": "Solicita una demo"
+  },
+  "hero": {
+    "badge": "Hecho para negocios locales en España",
+    "titlePrefix": "Loyali.",
+    "titleShimmer": "Donde cada visita cuenta.",
+    "subtitleLine1": "Convierte a los nuevos clientes en habituales.",
+    "subtitleLine2": "Aumenta las visitas recurrentes, mejora tu posición en Google y activa el boca a boca.",
+    "ctaSecondary": "Hablemos",
+    "ctaPrimary": "Empieza la magia",
+    "trust": "Sin tarjeta de crédito",
+    "videoAria": "Demo de la tarjeta de fidelidad Loyali"
+  },
+  "howItWorks": {
+    "sectionTitle": "Cómo funciona Loyali",
+    "sectionSubtitle": "De cero a tu primer cliente fiel esta misma tarde.",
+    "step1": {
+      "title": "Planea cómo fidelizar a tus clientes",
+      "body": "Tú decides qué premiar y cuándo. Loyali convierte tus reglas en un programa activo 24/7."
+    },
+    "step2": {
+      "title": "Los clientes la añaden a Apple o Google Wallet",
+      "body": "Un escaneo y la tarjeta de fidelidad digital entra en su Wallet de Apple o Google. Sin app, sin formularios."
+    },
+    "step3": {
+      "title": "Hazlos volver en automático",
+      "body": "Notificaciones push, reseñas de Google, visitas que se repiten, amigos que llegan. Sin mover un dedo."
+    }
+  },
+  "reassurance": {
+    "price": "9€/mes",
+    "trial": "14 días gratis",
+    "cancel": "Cancelas cuando quieras",
+    "noCard": "Sin tarjeta de crédito"
+  },
+  "benefits": {
+    "sectionTitle": "Tres formas de hacer crecer tu negocio",
+    "sectionSubtitle": "Mucho más que puntos de fidelidad: un sistema completo para conectar con tus clientes, construir reputación e impulsar el crecimiento.",
+    "loyalty": {
+      "title": "Mantente presente",
+      "subtitle": "Programa de fidelización digital",
+      "body": "Un canal directo al teléfono de cada cliente. Recuerda, recompensa y haz que vuelvan — automáticamente.",
+      "bullet1": "Notificaciones push al Wallet del cliente",
+      "bullet2": "Campañas automáticas de reactivación",
+      "bullet3": "Monitorea frecuencia de visita y preferencias"
+    },
+    "reputation": {
+      "title": "Construye tu reputación",
+      "subtitle": "Gestión inteligente de reseñas",
+      "body": "Las reseñas de 5 estrellas se hacen públicas, las quejas se quedan en privado. Escala en Google Maps sin arriesgar tu reputación.",
+      "bullet1": "Reseñas de 5 estrellas directas a Google Maps",
+      "bullet2": "Valoraciones bajas capturadas de forma interna",
+      "bullet3": "Mejora tu SEO local y visibilidad"
+    },
+    "growth": {
+      "title": "Convierte clientes en embajadores",
+      "subtitle": "Referidos y boca a boca",
+      "body": "Recompensa a quienes traen amigos. Convierte a tus habituales en tu canal de marketing más económico y confiable.",
+      "bullet1": "Recompensas de referidos para ambas partes",
+      "bullet2": "Mide el crecimiento amigo-trae-amigo",
+      "bullet3": "Crecimiento orgánico a través de redes de confianza"
+    }
+  },
+  "features": {
+    "sectionTitle": "Todo lo que necesitas para crecer en fidelidad, reputación y referidos.",
+    "sectionSubtitle": "Diseñado para negocios locales. Sin conocimientos técnicos.",
+    "wallet": {
+      "title": "Apple & Google Wallet",
+      "body": "Tus clientes añaden tu tarjeta al Wallet del móvil. Sin app, sin login — solo escanean y ganan."
+    },
+    "push": {
+      "title": "Notificaciones push",
+      "body": "Los mensajes llegan directo al Wallet de tus clientes. Anuncia ofertas, recupera a los inactivos y celebra hitos."
+    },
+    "qr": {
+      "title": "Check-in con código QR",
+      "body": "Escanea en caja para entregar puntos, sellos o recompensas. Sin hardware, sin dispositivos extra."
+    },
+    "rewards": {
+      "title": "Recompensas flexibles",
+      "body": "Puntos, sellos, niveles — diseña tu programa a tu manera. Cambia lo que quieras sin reimprimir tarjetas."
+    },
+    "analytics": {
+      "title": "Analytics de clientes",
+      "body": "Identifica a tus mejores clientes, analiza patrones de visita y descubre qué los hace volver."
+    },
+    "reviews": {
+      "title": "Gestión inteligente de reseñas",
+      "body": "Envía las reseñas de 5 estrellas a Google y mantén en privado las quejas. Mejora tu posicionamiento sin arriesgar la reputación."
+    }
+  },
+  "pricing": {
+    "sectionTitle": "Precios simples y transparentes",
+    "sectionSubtitle": "Dos planes. Sin costes ocultos. Prueba gratuita de 14 días, sin tarjeta de crédito.",
+    "perMonth": "/mes",
+    "core": {
+      "name": "Core",
+      "tagline": "Todo lo que necesitas para lanzar tu programa de fidelidad.",
+      "feature1": "Tarjetas Apple & Google Wallet",
+      "feature2": "Check-in con código QR",
+      "feature3": "Puntos, sellos y recompensas",
+      "feature4": "Gestión de reseñas",
+      "feature5": "Analytics básicos",
+      "feature6": "Soporte por email",
+      "cta": "Empieza la prueba gratuita"
+    },
+    "grow": {
+      "name": "Grow",
+      "tagline": "Activa campañas push y multiplica las visitas recurrentes.",
+      "feature1": "Todo lo incluido en Core",
+      "feature2": "Campañas de notificaciones push",
+      "feature3": "Flujos de reactivación automáticos",
+      "feature4": "Analytics avanzados",
+      "feature5": "Recompensas por referidos",
+      "feature6": "Soporte prioritario",
+      "cta": "Empieza la prueba gratuita"
+    }
+  },
+  "testimonials": {
+    "sectionTitle": "Nos adoran los negocios locales",
+    "one": {
+      "quote": "Tuvimos un 30% más de visitas recurrentes en el primer mes. La configuración nos llevó menos de 10 minutos.",
+      "author": "Maria S.",
+      "role": "Propietaria, Café Bonita"
+    },
+    "two": {
+      "quote": "A nuestros clientes les encanta la cartilla de sellos digital. Se acabaron las tarjetas de papel perdidas — y por fin tenemos datos reales sobre fidelidad.",
+      "author": "James T.",
+      "role": "Gerente, The Craft Tap"
+    },
+    "three": {
+      "quote": "Solo por los analytics ya merece la pena. Por fin sabemos qué recompensas realmente hacen volver a la gente.",
+      "author": "Priya K.",
+      "role": "Propietaria, Spice Route"
+    }
+  },
+  "finalCta": {
+    "title": "¿Listo para hacer crecer tu clientela habitual?",
+    "body": "Únete a Loyali. Prueba gratuita de 14 días.",
+    "button": "Empieza la prueba gratuita",
+    "trust": "Sin tarjeta de crédito"
+  },
+  "footer": {
+    "tagline": "Cada visita cuenta.",
+    "joinTitle": "ÚNETE A LA COMUNIDAD",
+    "joinSubtitle": "Déjanos tu email y te mantendremos al día.",
+    "emailLabel": "Tu email",
+    "emailPlaceholder": "Tu email aquí",
+    "joinButton": "Únete",
+    "joinSubmitting": "Enviando…",
+    "joinSuccess": "¡Gracias! Te escribiremos pronto.",
+    "joinError": "Algo ha fallado. Inténtalo de nuevo.",
+    "contactTitle": "CONTACTO",
+    "linkPrivacy": "Privacidad",
+    "linkTerms": "Términos",
+    "copyright": "Todos los derechos reservados."
+  },
+  "contact": {
+    "pageTitle": "Ponte en contacto",
+    "pageSubtitle": "¿Tienes una pregunta? Estaremos encantados de ayudarte. Elige el canal que prefieras.",
+    "whatsappLabel": "Respuesta más rápida",
+    "whatsappCta": "Escríbenos por WhatsApp",
+    "whatsappBody": "Haz clic para chatear directamente con nosotros. Solemos responder en minutos.",
+    "whatsappPrefilledMessage": "¡Hola Loyali! Quiero convertir a mis clientes nuevos en habituales, mejorar mi posición en Google y activar el boca a boca. ¿Me cuentas cómo?",
+    "emailFormTitle": "O envíanos un mensaje",
+    "emailFormSubtitle": "Te responderemos en menos de 24 horas.",
+    "emailField": "Tu email",
+    "emailPlaceholder": "tu@tunegocio.com",
+    "messageField": "Tu mensaje",
+    "messagePlaceholder": "Cuéntanos un poco sobre tu negocio y qué buscas…",
+    "submitButton": "Enviar mensaje",
+    "submittingButton": "Enviando…",
+    "successTitle": "¡Mensaje enviado!",
+    "successBody": "Gracias por escribirnos. Te contactaremos pronto.",
+    "errorBody": "Algo ha fallado. Inténtalo de nuevo o escríbenos por WhatsApp."
+  },
+  "floatingChat": {
+    "ariaLabel": "Escríbenos por WhatsApp"
+  },
+  "languageSwitcher": {
+    "label": "Idioma",
+    "en": "English",
+    "it": "Italiano",
+    "es": "Español"
+  },
+  "metadata": {
+    "title": "Loyali - Tarjetas de fidelidad digitales para Apple & Google Wallet",
+    "titleTemplate": "%s | Loyali",
+    "description": "Fideliza a tus clientes con tarjetas digitales en el Wallet. Puntos, sellos y analytics con código QR para negocios locales. 85% de retención. Activo en 24 horas.",
+    "shortDescription": "Fideliza a tus clientes con tarjetas digitales en el Wallet. Puntos, sellos y analytics con QR. 85% de retención. Activo en 24 horas.",
+    "twitterDescription": "Fideliza a tus clientes con tarjetas digitales en el Wallet. Puntos, sellos y analytics con QR. 85% de retención.",
+    "ogImageAlt": "Loyali - Plataforma de fidelización digital para Apple Wallet y Google Wallet"
+  },
+  "faq": {
+    "q1": {
+      "question": "¿Qué es Loyali?",
+      "answer": "Loyali es una plataforma de tarjetas de fidelidad digitales que permite a los negocios locales crear programas de fidelización con Apple Wallet y Google Wallet. Los clientes no necesitan descargar ninguna app: solo escanean un código QR para unirse y empezar a ganar recompensas."
+    },
+    "q2": {
+      "question": "¿Cuánto tarda la configuración de Loyali?",
+      "answer": "Loyali se configura en menos de 5 minutos. Crea tu tarjeta, imprime el código QR y empieza a registrar clientes al instante. Sin instalación de hardware ni formación técnica."
+    },
+    "q3": {
+      "question": "¿Los clientes tienen que descargar una app?",
+      "answer": "No. Los clientes añaden tu tarjeta de fidelidad directamente a su Apple Wallet o Google Wallet escaneando un código QR. Sin app, sin login — solo escanear y ganar."
+    },
+    "q4": {
+      "question": "¿Qué tipo de negocios usan Loyali?",
+      "answer": "Loyali está pensado para tiendas y negocios físicos: cafeterías, restaurantes, bares, comercios, peluquerías y otros negocios locales que quieran aumentar la retención de clientes y las visitas recurrentes."
+    },
+    "q5": {
+      "question": "¿Cuánto cuesta Loyali?",
+      "answer": "Loyali ofrece dos planes: Core (9€/mes) con todo lo que necesitas para lanzar tu programa de fidelidad, y Grow (12€/mes) con campañas de notificaciones push y analytics avanzados. Todos los planes incluyen una prueba gratuita de 14 días sin tarjeta de crédito."
+    }
+  },
+  "privacy": {
+    "title": "Política de privacidad",
+    "updated": "Última actualización: abril de 2026",
+    "intro": {
+      "title": "Introducción",
+      "body": "Esta política explica cómo Loyali y los comercios que utilizan Loyali (\"nosotros\") recopilan, usan y protegen tus datos personales cuando te unes a un programa de fidelidad a través de nuestra plataforma."
+    },
+    "controller": {
+      "title": "Responsable del tratamiento",
+      "body": "Cuando te unes al programa de fidelidad de un comercio, ese comercio es el responsable del tratamiento de tus datos. Loyali (operado por Loyalnes) actúa como encargado del tratamiento por cuenta del comercio, proporcionando la plataforma técnica.\n\nPara consultas sobre cómo un comercio específico usa tus datos, contacta directamente con el comercio."
+    },
+    "data": {
+      "title": "Datos que recopilamos",
+      "body": "Recopilamos solo la información que proporcionas al unirte: nombre, apellido (opcional), email y teléfono (opcional). También guardamos la actividad del programa (puntos, premios canjeados, historial de visitas) generada al usarlo."
+    },
+    "purposes": {
+      "title": "Cómo usamos tus datos",
+      "body": "Tus datos se usan para: (1) emitir y gestionar tu tarjeta digital, incluidos los pases de Apple Wallet y Google Pay; (2) registrar puntos, premios y actividad del programa; (3) enviarte notificaciones transaccionales relacionadas con tu tarjeta; (4) proporcionar al comercio analytics agregados y anónimos."
+    },
+    "legal": {
+      "title": "Base legal",
+      "body": "Tratamos tus datos sobre la base de tu consentimiento explícito (art. 6.1.a RGPD), prestado al marcar la casilla del formulario de alta. Puedes retirar el consentimiento en cualquier momento."
+    },
+    "retention": {
+      "title": "Conservación",
+      "body": "Tus datos se conservan mientras tu tarjeta esté activa y hasta 24 meses de inactividad, tras los cuales se anonimizan o eliminan salvo obligación legal."
+    },
+    "rights": {
+      "title": "Tus derechos",
+      "body": "Conforme al RGPD tienes derecho de acceso, rectificación, supresión, limitación, portabilidad y oposición al tratamiento. Para ejercerlos contacta con el comercio o escribe a privacy@loyali.online."
+    },
+    "contact": {
+      "title": "Contacto",
+      "body": "Loyalnes — privacy@loyali.online"
+    }
+  }
+}

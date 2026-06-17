@@ -1,0 +1,259 @@
+{
+  "nav": {
+    "brand": "Loyali",
+    "features": "Features",
+    "pricing": "Pricing",
+    "contact": "Contact",
+    "login": "Log in",
+    "cta": "Get a Demo"
+  },
+  "hero": {
+    "badge": "Made for local businesses in Spain & Italy",
+    "titlePrefix": "Loyali.",
+    "titleShimmer": "Where every visit counts.",
+    "subtitleLine1": "Turn first-time customers into regulars.",
+    "subtitleLine2": "Grow repeat visits, boost your Google ranking, and unlock word-of-mouth.",
+    "ctaSecondary": "Let's talk",
+    "ctaPrimary": "Start the magic",
+    "trust": "No credit card required",
+    "videoAria": "Loyali loyalty card demo"
+  },
+  "howItWorks": {
+    "sectionTitle": "How Loyali works",
+    "sectionSubtitle": "From zero to your first loyal customer this afternoon.",
+    "step1": {
+      "title": "Plan how to keep customers loyal",
+      "body": "You decide what to reward and when. Loyali turns your rules into a program running 24/7."
+    },
+    "step2": {
+      "title": "Customers add it to Apple or Google Wallet",
+      "body": "One scan and the digital loyalty card lands in their Apple or Google Wallet. No app, no signup form."
+    },
+    "step3": {
+      "title": "Bring them back on autopilot",
+      "body": "Push notifications, Google review requests, visits that repeat, friends who arrive. Without lifting a finger."
+    }
+  },
+  "reassurance": {
+    "price": "€9/month",
+    "trial": "14-day free trial",
+    "cancel": "Cancel anytime",
+    "noCard": "No credit card required"
+  },
+  "benefits": {
+    "sectionTitle": "Three Ways to Grow Your Business",
+    "sectionSubtitle": "More than just loyalty points — a complete system to engage customers, build reputation, and drive growth.",
+    "loyalty": {
+      "title": "Stay Top of Mind",
+      "subtitle": "Digital Loyalty Program",
+      "body": "Your direct line to every customer's phone. Remind, reward, and bring them back — automatically.",
+      "bullet1": "Push notifications to customer wallets",
+      "bullet2": "Automated re-engagement campaigns",
+      "bullet3": "Track visit frequency and preferences"
+    },
+    "reputation": {
+      "title": "Build Your Reputation",
+      "subtitle": "Smart Review Management",
+      "body": "5-star reviews go public, complaints stay private. Climb Google Maps without risking your reputation.",
+      "bullet1": "5-star reviews go straight to Google Maps",
+      "bullet2": "Lower ratings captured internally",
+      "bullet3": "Improve local SEO and discoverability"
+    },
+    "growth": {
+      "title": "Turn Customers into Advocates",
+      "subtitle": "Referral & Word-of-Mouth",
+      "body": "Reward customers who bring friends. Turn your regulars into your cheapest, most trusted marketing channel.",
+      "bullet1": "Referral rewards for both parties",
+      "bullet2": "Track friend-brings-friend growth",
+      "bullet3": "Organic growth through trusted networks"
+    }
+  },
+  "features": {
+    "sectionTitle": "Everything you need to grow loyalty, reputation, and referrals.",
+    "sectionSubtitle": "Built for local businesses. Zero technical skills required.",
+    "wallet": {
+      "title": "Apple & Google Wallet",
+      "body": "Customers add your card to their mobile wallet. No app, no login — just scan and earn."
+    },
+    "push": {
+      "title": "Push Notifications",
+      "body": "Messages land directly on your customers' wallets. Announce offers, win back inactive visitors, celebrate milestones."
+    },
+    "qr": {
+      "title": "QR Code Check-ins",
+      "body": "Scan at checkout to award points, stamps, or rewards. Zero hardware, zero extra devices."
+    },
+    "rewards": {
+      "title": "Flexible Rewards",
+      "body": "Points, stamps, tiers — design your program your way. Change anything without reprinting cards."
+    },
+    "analytics": {
+      "title": "Customer Analytics",
+      "body": "Spot your best customers, track visit patterns, and see what keeps them coming back."
+    },
+    "reviews": {
+      "title": "Smart Review Management",
+      "body": "Route 5-star reviews to Google, keep complaints private. Boost your ranking without reputation risk."
+    }
+  },
+  "pricing": {
+    "sectionTitle": "Simple, Transparent Pricing",
+    "sectionSubtitle": "Two plans. No hidden fees. 14-day free trial, no credit card required.",
+    "perMonth": "/month",
+    "core": {
+      "name": "Core",
+      "tagline": "Everything you need to launch loyalty.",
+      "feature1": "Apple & Google Wallet cards",
+      "feature2": "QR-based check-ins",
+      "feature3": "Points, stamps & rewards",
+      "feature4": "Review management",
+      "feature5": "Basic analytics",
+      "feature6": "Email support",
+      "cta": "Start Free Trial"
+    },
+    "grow": {
+      "name": "Grow",
+      "tagline": "Unlock push campaigns and drive repeat visits.",
+      "feature1": "Everything in Core",
+      "feature2": "Push notification campaigns",
+      "feature3": "Automated re-engagement flows",
+      "feature4": "Advanced analytics",
+      "feature5": "Referral rewards",
+      "feature6": "Priority support",
+      "cta": "Start Free Trial"
+    }
+  },
+  "testimonials": {
+    "sectionTitle": "Loved by local businesses",
+    "one": {
+      "quote": "We saw a 30% increase in repeat visits within the first month. Setup took less than 10 minutes.",
+      "author": "Maria S.",
+      "role": "Owner, Café Bonita"
+    },
+    "two": {
+      "quote": "Our customers love the digital stamp card. No more lost paper cards — and we get real data on loyalty.",
+      "author": "James T.",
+      "role": "Manager, The Craft Tap"
+    },
+    "three": {
+      "quote": "The analytics alone are worth it. We finally know which rewards actually bring people back.",
+      "author": "Priya K.",
+      "role": "Owner, Spice Route"
+    }
+  },
+  "finalCta": {
+    "title": "Ready to grow your repeat business?",
+    "body": "Join Loyali. 14-day free trial.",
+    "button": "Start Free Trial",
+    "trust": "No credit card required"
+  },
+  "footer": {
+    "tagline": "Every visit counts.",
+    "joinTitle": "JOIN THE COMMUNITY",
+    "joinSubtitle": "Leave your email and we'll keep you in the loop.",
+    "emailLabel": "Your email",
+    "emailPlaceholder": "Your email here",
+    "joinButton": "Join",
+    "joinSubmitting": "Joining…",
+    "joinSuccess": "Thanks for joining! We'll be in touch.",
+    "joinError": "Something went wrong. Please try again.",
+    "contactTitle": "CONTACT",
+    "linkPrivacy": "Privacy",
+    "linkTerms": "Terms",
+    "copyright": "All rights reserved."
+  },
+  "contact": {
+    "pageTitle": "Get in touch",
+    "pageSubtitle": "Have a question? We'd love to hear from you. Pick the channel that works best for you.",
+    "whatsappLabel": "Quickest reply",
+    "whatsappCta": "Chat on WhatsApp",
+    "whatsappBody": "Tap the button to message us directly. We typically reply within minutes.",
+    "whatsappPrefilledMessage": "Hi Loyali! I want to turn first-time customers into regulars, boost my Google ranking, and unlock word-of-mouth. How does it work?",
+    "emailFormTitle": "Or send us a message",
+    "emailFormSubtitle": "We'll get back to you within 24 hours.",
+    "emailField": "Your email",
+    "emailPlaceholder": "you@yourbusiness.com",
+    "messageField": "Your message",
+    "messagePlaceholder": "Tell us a bit about your business and what you're looking for…",
+    "submitButton": "Send message",
+    "submittingButton": "Sending…",
+    "successTitle": "Message sent!",
+    "successBody": "Thanks for reaching out. We'll be in touch soon.",
+    "errorBody": "Something went wrong. Please try again or use WhatsApp."
+  },
+  "floatingChat": {
+    "ariaLabel": "Chat with us on WhatsApp"
+  },
+  "languageSwitcher": {
+    "label": "Language",
+    "en": "English",
+    "it": "Italiano",
+    "es": "Español"
+  },
+  "metadata": {
+    "title": "Loyali - Digital Loyalty Cards for Apple & Google Wallet",
+    "titleTemplate": "%s | Loyali",
+    "description": "Build customer loyalty with digital wallet cards. QR-based points, stamps, and analytics for local businesses. 85% retention rate. Live in 24 hours.",
+    "shortDescription": "Build customer loyalty with digital wallet cards. QR-based points, stamps, and analytics. 85% retention rate. Live in 24 hours.",
+    "twitterDescription": "Build customer loyalty with digital wallet cards. QR-based points, stamps, and analytics. 85% retention rate.",
+    "ogImageAlt": "Loyali - Digital Loyalty Platform for Apple Wallet and Google Wallet"
+  },
+  "faq": {
+    "q1": {
+      "question": "What is Loyali?",
+      "answer": "Loyali is a digital loyalty card platform that allows local businesses to create loyalty programs using Apple Wallet and Google Wallet. No app download required for customers - they simply scan a QR code to join and earn rewards."
+    },
+    "q2": {
+      "question": "How long does it take to set up Loyali?",
+      "answer": "Loyali can be set up in under 5 minutes. Create your card, print your QR code, and start enrolling customers immediately. No hardware installation or technical training required."
+    },
+    "q3": {
+      "question": "Do customers need to download an app?",
+      "answer": "No. Customers add your loyalty card directly to their Apple Wallet or Google Wallet by scanning a QR code. No app download, no login friction - just scan and earn."
+    },
+    "q4": {
+      "question": "What types of businesses use Loyali?",
+      "answer": "Loyali is designed for physical stores including cafes, restaurants, bars, retail shops, salons, and other local businesses that want to increase customer retention and repeat visits."
+    },
+    "q5": {
+      "question": "How much does Loyali cost?",
+      "answer": "Loyali offers two plans: Core (€9/month) with everything you need to launch loyalty, and Grow (€12/month) with push notification campaigns and advanced analytics. All plans include a 14-day free trial with no credit card required."
+    }
+  },
+  "privacy": {
+    "title": "Privacy Policy",
+    "updated": "Last updated: April 2026",
+    "intro": {
+      "title": "Introduction",
+      "body": "This privacy policy explains how Loyali and the merchants who use Loyali (\"we\") collect, use, and protect your personal data when you join a loyalty program through our platform."
+    },
+    "controller": {
+      "title": "Data controller",
+      "body": "When you join a merchant's loyalty program, that merchant is the data controller for your customer data. Loyali (operated by Loyalnes) acts as the data processor on the merchant's behalf, providing the technical platform.\n\nFor questions about how a specific merchant uses your data, contact the merchant directly."
+    },
+    "data": {
+      "title": "Data we collect",
+      "body": "We collect only the information you provide when joining: first name, last name (optional), email address, and phone number (optional). We also store loyalty activity (points earned, rewards redeemed, visit history) generated as you use the program."
+    },
+    "purposes": {
+      "title": "How we use your data",
+      "body": "Your data is used to: (1) issue and manage your digital loyalty card, including Apple Wallet and Google Pay passes; (2) track points, rewards, and program activity; (3) send transactional notifications related to your loyalty card; (4) provide aggregated, anonymized analytics to the merchant."
+    },
+    "legal": {
+      "title": "Legal basis",
+      "body": "We process your data based on your explicit consent (Article 6(1)(a) GDPR), provided when you check the consent box on the join form. You can withdraw consent at any time."
+    },
+    "retention": {
+      "title": "Data retention",
+      "body": "Your data is kept while your loyalty card is active and for up to 24 months of inactivity, after which it is anonymized or deleted unless legal obligations require longer retention."
+    },
+    "rights": {
+      "title": "Your rights",
+      "body": "Under GDPR you have the right to access, rectify, erase, restrict, or port your data, and to object to processing. To exercise these rights, contact the merchant or write to privacy@loyali.online."
+    },
+    "contact": {
+      "title": "Contact",
+      "body": "Loyalnes — privacy@loyali.online"
+    }
+  }
+}

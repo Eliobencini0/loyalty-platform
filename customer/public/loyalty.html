@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
+  <title>My loyalty card</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Serif+Display&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #FCF8FF;
+      --surface: #FFFFFF;
+      --surface-low: #F5F1FA;
+      --surface-container: #EFE6F7;
+      --ink: #1C1B1F;
+      --ink-soft: rgba(255, 255, 255, 0.65);
+      --muted: #49454F;
+      --muted-2: #79747E;
+      --line: #E7E0EC;
+      --line-strong: #CAC4D0;
+      --accent: #EFFF74;
+      --primary: #725BF3;
+    }
+    html, body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      min-height: 100dvh;
+    }
+    body {
+      padding: clamp(20px, 5vw, 32px) clamp(16px, 4vw, 24px) calc(clamp(96px, 14vh, 120px) + env(safe-area-inset-bottom));
+    }
+    .shell {
+      max-width: 480px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .brand {
+      text-align: center;
+      padding: 4px 0 4px;
+    }
+    .brand-kicker {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .brand-name {
+      font-size: clamp(26px, 6vw, 32px);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      margin-top: 4px;
+      line-height: 1.05;
+      overflow-wrap: anywhere;
+    }
+    /* Points hero — chartreuse, matches dashboard hub-hero */
+    .hero {
+      background: var(--accent);
+      color: var(--ink);
+      border-radius: 25px;
+      padding: clamp(22px, 5vw, 28px);
+      box-shadow:
+        0 4px 12px rgba(28, 27, 31, 0.10),
+        0 16px 32px -8px rgba(28, 27, 31, 0.18),
+        0 32px 64px -16px rgba(239, 255, 116, 0.55);
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .hero-points {
+      font-family: 'DM Sans', sans-serif;
+      font-size: clamp(56px, 16vw, 88px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      color: var(--ink);
+      margin-top: 8px;
+      font-variant-numeric: tabular-nums;
+    }
+    .hero-points-unit {
+      font-size: 0.4em;
+      font-weight: 600;
+      color: var(--muted);
+      letter-spacing: 0.02em;
+      margin-left: 0.18em;
+    }
+    .hero-customer {
+      margin-top: 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 12px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+    .hero-customer strong {
+      color: var(--ink);
+      font-weight: 600;
+      display: block;
+    }
+    .hero-customer .card-num {
+      font-variant-numeric: tabular-nums;
+      font-size: 12px;
+      letter-spacing: 0.02em;
+    }
+    /* Progress to next reward */
+    .progress {
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+    }
+    .progress-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 10px;
+      gap: 8px;
+    }
+    .progress-text {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink);
+    }
+    .progress-text strong {
+      color: var(--ink);
+      font-weight: 700;
+    }
+    .progress-target {
+      font-size: 12px;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+    .progress-bar {
+      height: 8px;
+      background: var(--surface-low);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--ink);
+      border-radius: 999px;
+      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    /* Meta chips */
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .chip-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--ink);
+      flex-shrink: 0;
+    }
+    /* Surface cards */
+    .card {
+      background: var(--surface);
+      border-radius: 28px;
+      padding: clamp(20px, 5vw, 24px);
+      box-shadow: 0 8px 24px rgba(28, 27, 31, 0.06);
+    }
+    .section-title {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 14px;
+    }
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .row:last-child { border-bottom: 0; padding-bottom: 0; }
+    .row:first-of-type { padding-top: 0; }
+    .row-main { min-width: 0; flex: 1; }
+    .row-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ink);
+      overflow-wrap: anywhere;
+    }
+    .row-meta {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .row-aside {
+      flex-shrink: 0;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+    }
+    .btn-redeem {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 8px 14px;
+      border-radius: 12px;
+      background: var(--ink);
+      color: var(--accent);
+      border: none;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: filter 0.15s ease, transform 0.15s ease;
+    }
+    .btn-redeem:hover { filter: brightness(1.15); }
+    .btn-redeem:active { transform: scale(0.97); }
+    .empty {
+      color: var(--muted);
+      font-size: 14px;
+      padding: 8px 0;
+    }
+    /* Activity timeline */
+    .timeline-row {
+      display: grid;
+      grid-template-columns: 16px 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+    }
+    .timeline-row:last-child { border-bottom: 0; padding-bottom: 0; }
+    .timeline-row:first-of-type { padding-top: 0; }
+    .timeline-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 1.5px var(--ink);
+      justify-self: center;
+    }
+    .timeline-dot.spend { background: var(--ink); box-shadow: none; }
+    .timeline-desc {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--ink);
+      overflow-wrap: anywhere;
+    }
+    .timeline-when {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+    .timeline-delta {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+    }
+    .timeline-delta.pos { color: var(--ink); }
+    /* Sticky show-card CTA */
+    .show-card-cta {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 14px 16px calc(14px + env(safe-area-inset-bottom));
+      background: linear-gradient(180deg, transparent 0%, var(--bg) 35%);
+      display: flex;
+      justify-content: center;
+      pointer-events: none;
+      z-index: 50;
+    }
+    .show-card-btn {
+      pointer-events: auto;
+      width: 100%;
+      max-width: 480px;
+      height: 56px;
+      border-radius: 999px;
+      background: var(--ink);
+      color: var(--accent);
+      border: none;
+      font: inherit;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      box-shadow: 0 12px 28px rgba(10, 10, 10, 0.25);
+      transition: filter 0.15s ease, transform 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .show-card-btn:hover { filter: brightness(1.15); }
+    .show-card-btn:active { transform: scale(0.985); }
+    /* Scan-mode overlay — light, on-brand */
+    .scan-overlay {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 100;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 24px calc(32px + env(safe-area-inset-bottom));
+      gap: 20px;
+    }
+    .scan-overlay.open { display: flex; }
+    .scan-card {
+      background: var(--surface);
+      border-radius: 28px;
+      padding: 28px;
+      width: min(86vw, 400px);
+      box-shadow: 0 16px 48px rgba(10, 10, 10, 0.10);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    .scan-kicker {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .scan-qr {
+      width: 100%;
+      aspect-ratio: 1;
+      background: #fff;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .scan-qr img { width: 100%; height: 100%; display: block; image-rendering: pixelated; }
+    .scan-info {
+      text-align: center;
+      color: var(--ink);
+    }
+    .scan-info-merchant {
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .scan-info-card {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+    .scan-close {
+      position: absolute;
+      top: calc(20px + env(safe-area-inset-top));
+      right: 20px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(10, 10, 10, 0.06);
+    }
+    /* States */
+    .loading, .error-state {
+      max-width: 480px;
+      margin: 80px auto 0;
+      text-align: center;
+      color: var(--muted);
+      font-size: 16px;
+    }
+    .error-state .err-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      margin-bottom: 18px;
+    }
+    .error-state h1 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .error-state p {
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 52px;
+      padding: 0 24px;
+      border-radius: 16px;
+      background: var(--ink);
+      color: var(--accent);
+      border: none;
+      font: inherit;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .hidden { display: none !important; }
+    .marketing-card { padding: 16px; }
+    .marketing-row { display: flex; align-items: center; gap: 14px; }
+    .marketing-text { flex: 1; min-width: 0; }
+    .marketing-title { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+    .marketing-desc { font-size: 12px; color: var(--muted); line-height: 1.4; }
+    .switch { position: relative; display: inline-block; width: 48px; height: 28px; flex-shrink: 0; cursor: pointer; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .switch-track { position: absolute; inset: 0; background: var(--line-strong); border-radius: 999px; transition: background 0.2s ease; }
+    .switch-thumb { position: absolute; top: 2px; left: 2px; width: 24px; height: 24px; border-radius: 50%; background: #fff; box-shadow: 0 2px 4px rgba(0,0,0,0.2); transition: transform 0.2s ease; }
+    .switch input:checked + .switch-track { background: var(--primary); }
+    .switch input:checked + .switch-track .switch-thumb { transform: translateX(20px); }
+    .switch input:disabled + .switch-track { opacity: 0.6; cursor: wait; }
+    .marketing-status { margin-top: 10px; font-size: 12px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <div id="loading" class="loading">Loading…</div>
+
+  <div id="error" class="error-state hidden">
+    <div class="err-icon" aria-hidden="true">!</div>
+    <h1>Something went wrong</h1>
+    <p id="errorMessage">Please try again in a moment.</p>
+    <button onclick="window.location.reload()" class="btn-ghost">Try again</button>
+  </div>
+
+  <div id="app" class="shell hidden">
+    <header class="brand">
+      <div class="brand-kicker" id="brandKicker">Loyalty card</div>
+      <h1 class="brand-name" id="merchantName"></h1>
+    </header>
+
+    <section class="hero">
+      <div class="hero-label" id="pointsLabel">Points balance</div>
+      <div class="hero-points">
+        <span id="pointsBalance">0</span><span class="hero-points-unit" id="pointsUnit">pts</span>
+      </div>
+      <div class="hero-customer">
+        <strong id="customerName"></strong>
+      </div>
+      <div id="progressBlock" class="progress hidden">
+        <div class="progress-row">
+          <div class="progress-text" id="progressText"></div>
+          <div class="progress-target" id="progressTarget"></div>
+        </div>
+        <div class="progress-bar"><div class="progress-bar-fill" id="progressFill" style="width:0%"></div></div>
+      </div>
+    </section>
+
+    <div class="meta-row" id="metaRow"></div>
+
+    <section id="redeemableSection" class="card hidden">
+      <div class="section-title" id="redeemableTitle">Ready to redeem</div>
+      <div id="redeemableList"></div>
+    </section>
+
+    <section id="prizesSection" class="card hidden">
+      <div class="section-title" id="prizesTitle">Active rewards</div>
+      <div id="activePrizes"></div>
+    </section>
+
+    <section class="card">
+      <div class="section-title" id="activityTitle">Recent activity</div>
+      <div id="recentHistory"></div>
+    </section>
+
+    <section class="card marketing-card">
+      <div class="marketing-row">
+        <div class="marketing-text">
+          <div class="marketing-title" id="marketingTitle">Receive offers from this merchant</div>
+          <div class="marketing-desc" id="marketingDesc">Choose if you want this merchant to send you news and promotions.</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="marketingToggle">
+          <span class="switch-track"><span class="switch-thumb"></span></span>
+        </label>
+      </div>
+      <div class="marketing-status" id="marketingStatus" hidden></div>
+    </section>
+  </div>
+
+  <div class="show-card-cta hidden" id="showCardCta">
+    <button class="show-card-btn" id="showCardBtn">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v3M14 20h3v1h4v-4"/></svg>
+      <span id="showCardLabel">Show to earn points</span>
+    </button>
+  </div>
+
+  <div class="scan-overlay" id="scanOverlay" role="dialog" aria-modal="true" aria-label="Scan card">
+    <button class="scan-close" id="scanClose" aria-label="Close">×</button>
+    <div class="scan-card">
+      <div class="scan-kicker" id="scanKicker">Show to earn points</div>
+      <div class="scan-qr"><img id="scanQR" alt="" /></div>
+      <div class="scan-info">
+        <div class="scan-info-merchant" id="scanMerchant"></div>
+        <div class="scan-info-card" id="scanCard"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const locale = (navigator.language || 'en').slice(0, 2);
+    const supportedLocale = ['en', 'it', 'es'].includes(locale) ? locale : 'en';
+    const intlLocale = { en: 'en-GB', it: 'it-IT', es: 'es-ES' }[supportedLocale];
+
+    const COPY = {
+      en: {
+        kicker: 'Loyalty card',
+        loading: 'Loading…',
+        pointsLabel: 'Points balance',
+        unit: 'pts',
+        cardLabel: (n) => `Card ${n}`,
+        progressText: (pts, name) => `<strong>${pts} pts</strong> to <strong>${name}</strong>`,
+        progressTarget: (cur, tot) => `${cur} / ${tot}`,
+        progressDone: 'Top tier reached',
+        tierChip: (t) => t,
+        prizesChip: (n) => `${n} active reward${n === 1 ? '' : 's'}`,
+        readyToRedeem: 'Ready to redeem',
+        redeem: 'Redeem',
+        activeRewards: 'Active rewards',
+        recentActivity: 'Recent activity',
+        emptyHistory: 'No activity yet — earn your first points soon.',
+        emptyPrizes: 'No active rewards right now.',
+        showToEarn: 'Show to earn points',
+        expires: (when) => `Expires ${when}`,
+        errMsg: 'Failed to load loyalty card',
+      },
+      it: {
+        kicker: 'Tessera fedeltà',
+        loading: 'Caricamento…',
+        pointsLabel: 'Saldo punti',
+        unit: 'pti',
+        cardLabel: (n) => `Tessera ${n}`,
+        progressText: (pts, name) => `<strong>${pts} pti</strong> a <strong>${name}</strong>`,
+        progressTarget: (cur, tot) => `${cur} / ${tot}`,
+        progressDone: 'Massimo livello raggiunto',
+        tierChip: (t) => t,
+        prizesChip: (n) => `${n} premi${n === 1 ? 'o' : ''} attiv${n === 1 ? 'o' : 'i'}`,
+        readyToRedeem: 'Pronti da riscattare',
+        redeem: 'Riscatta',
+        activeRewards: 'Premi attivi',
+        recentActivity: 'Attività recente',
+        emptyHistory: "Nessuna attività ancora — guadagna i tuoi primi punti.",
+        emptyPrizes: 'Nessun premio attivo al momento.',
+        showToEarn: 'Mostra per guadagnare punti',
+        expires: (when) => `Scade ${when}`,
+        errMsg: 'Impossibile caricare la tessera',
+      },
+      es: {
+        kicker: 'Tarjeta de fidelidad',
+        loading: 'Cargando…',
+        pointsLabel: 'Saldo de puntos',
+        unit: 'pts',
+        cardLabel: (n) => `Tarjeta ${n}`,
+        progressText: (pts, name) => `<strong>${pts} pts</strong> para <strong>${name}</strong>`,
+        progressTarget: (cur, tot) => `${cur} / ${tot}`,
+        progressDone: 'Nivel máximo alcanzado',
+        tierChip: (t) => t,
+        prizesChip: (n) => `${n} premio${n === 1 ? '' : 's'} activo${n === 1 ? '' : 's'}`,
+        readyToRedeem: 'Listos para canjear',
+        redeem: 'Canjear',
+        activeRewards: 'Premios activos',
+        recentActivity: 'Actividad reciente',
+        emptyHistory: 'Sin actividad aún — gana tus primeros puntos.',
+        emptyPrizes: 'No hay premios activos por ahora.',
+        showToEarn: 'Mostrar para ganar puntos',
+        expires: (when) => `Caduca ${when}`,
+        errMsg: 'No se pudo cargar la tarjeta',
+      },
+    };
+    const t = COPY[supportedLocale];
+
+    const $ = (id) => document.getElementById(id);
+    const escapeHtml = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+    function relativeTime(iso) {
+      const d = new Date(iso);
+      const diffSec = (Date.now() - d.getTime()) / 1000;
+      const rtf = new Intl.RelativeTimeFormat(intlLocale, { numeric: 'auto' });
+      const units = [
+        ['year', 31536000],
+        ['month', 2592000],
+        ['week', 604800],
+        ['day', 86400],
+        ['hour', 3600],
+        ['minute', 60],
+      ];
+      for (const [unit, sec] of units) {
+        if (Math.abs(diffSec) >= sec) return rtf.format(-Math.round(diffSec / sec), unit);
+      }
+      return rtf.format(-Math.round(diffSec), 'second');
+    }
+
+    function shortDate(iso) {
+      return new Date(iso).toLocaleDateString(intlLocale, { day: '2-digit', month: 'short' });
+    }
+
+    document.documentElement.lang = supportedLocale;
+    $('brandKicker').textContent = t.kicker;
+    $('pointsLabel').textContent = t.pointsLabel;
+    $('pointsUnit').textContent = t.unit;
+    $('redeemableTitle').textContent = t.readyToRedeem;
+    $('prizesTitle').textContent = t.activeRewards;
+    $('activityTitle').textContent = t.recentActivity;
+    $('showCardLabel').textContent = t.showToEarn;
+    $('scanKicker').textContent = t.showToEarn;
+    $('loading').textContent = t.loading;
+
+    async function load() {
+      const token = window.location.pathname.split('/').pop();
+      try {
+        const res = await fetch(`/api/wallet/access/${token}`);
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({}));
+          throw new Error(body.error || t.errMsg);
+        }
+        const data = await res.json();
+
+        $('merchantName').textContent = data.merchantName;
+        $('customerName').textContent = data.customerName;
+        $('pointsBalance').textContent = String(data.pointsBalance ?? 0);
+
+        // Marketing opt-in toggle
+        const marketingToggle = $('marketingToggle');
+        marketingToggle.checked = Boolean(data.marketingOptedIn);
+        $('marketingTitle').textContent = (lang === 'it')
+          ? `Ricevi offerte da ${data.merchantName}`
+          : (lang === 'es' ? `Recibe ofertas de ${data.merchantName}` : `Receive offers from ${data.merchantName}`);
+        $('marketingDesc').textContent = (lang === 'it')
+          ? "Puoi cambiare idea quando vuoi."
+          : (lang === 'es' ? "Puedes cambiar de opinión cuando quieras." : "You can change your mind anytime.");
+        marketingToggle.onchange = async (e) => {
+          const accept = e.target.checked;
+          marketingToggle.disabled = true;
+          try {
+            const r = await fetch(`/api/wallet/access/${token}/marketing-consent`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ accept }),
+            });
+            if (!r.ok) throw new Error('failed');
+            const status = $('marketingStatus');
+            status.hidden = false;
+            status.textContent = accept
+              ? (lang === 'it' ? 'Iscritto alle offerte' : (lang === 'es' ? 'Suscrito a las ofertas' : 'Subscribed to offers'))
+              : (lang === 'it' ? 'Disiscritto' : (lang === 'es' ? 'Cancelado' : 'Unsubscribed'));
+            setTimeout(() => { status.hidden = true; }, 2500);
+          } catch {
+            marketingToggle.checked = !accept; // rollback
+          } finally {
+            marketingToggle.disabled = false;
+          }
+        };
+
+        // Progress to next reward
+        if (data.nextReward) {
+          $('progressBlock').classList.remove('hidden');
+          $('progressText').innerHTML = t.progressText(data.nextReward.pointsToGo, escapeHtml(data.nextReward.rewardName));
+          $('progressTarget').textContent = t.progressTarget(data.pointsBalance ?? 0, data.nextReward.threshold);
+          requestAnimationFrame(() => {
+            $('progressFill').style.width = `${Math.round((data.nextReward.progress || 0) * 100)}%`;
+          });
+        }
+
+        // Meta chips: tier + active prizes
+        const meta = $('metaRow');
+        meta.innerHTML = '';
+        if (data.tierName) {
+          const tierChip = document.createElement('span');
+          tierChip.className = 'chip';
+          tierChip.innerHTML = `<span class="chip-dot"></span>${escapeHtml(t.tierChip(data.tierName))}`;
+          meta.appendChild(tierChip);
+        }
+        if (data.activePrizeCount > 0) {
+          const prizeChip = document.createElement('span');
+          prizeChip.className = 'chip';
+          prizeChip.textContent = t.prizesChip(data.activePrizeCount);
+          meta.appendChild(prizeChip);
+        }
+        if (!meta.children.length) meta.style.display = 'none';
+
+        // Redeemable rewards (only if pointsBalance >= threshold)
+        if (data.availableRewards?.length) {
+          $('redeemableSection').classList.remove('hidden');
+          $('redeemableList').innerHTML = data.availableRewards.map((r) => `
+            <div class="row">
+              <div class="row-main">
+                <div class="row-title">${escapeHtml(r.rewardName)}</div>
+                <div class="row-meta">${escapeHtml(r.name)} · ${r.threshold} ${t.unit}</div>
+              </div>
+              <button class="btn-redeem" disabled title="Show to merchant to redeem">${t.redeem}</button>
+            </div>
+          `).join('');
+        }
+
+        // Active prizes
+        if (data.activePrizes?.length) {
+          $('prizesSection').classList.remove('hidden');
+          $('activePrizes').innerHTML = data.activePrizes.map((p) => `
+            <div class="row">
+              <div class="row-main">
+                <div class="row-title">${escapeHtml(p.name)}</div>
+                <div class="row-meta">${t.expires(shortDate(p.expiresAt))}</div>
+              </div>
+              <span class="row-aside">${escapeHtml(p.redemptionCode)}</span>
+            </div>
+          `).join('');
+        }
+
+        // Recent activity
+        const history = $('recentHistory');
+        if (data.recentHistory?.length) {
+          history.innerHTML = data.recentHistory.map((item) => {
+            const isPositive = (item.pointsDelta ?? 0) > 0;
+            const dotClass = isPositive ? '' : 'spend';
+            const delta = item.pointsDelta !== null
+              ? `<span class="timeline-delta ${isPositive ? 'pos' : ''}">${isPositive ? '+' : ''}${item.pointsDelta}</span>`
+              : '<span></span>';
+            return `
+              <div class="timeline-row">
+                <span class="timeline-dot ${dotClass}"></span>
+                <div>
+                  <div class="timeline-desc">${escapeHtml(item.description)}</div>
+                  <div class="timeline-when">${relativeTime(item.createdAt)}</div>
+                </div>
+                ${delta}
+              </div>
+            `;
+          }).join('');
+        } else {
+          history.innerHTML = `<div class="empty">${t.emptyHistory}</div>`;
+        }
+
+        // Wire scan-mode
+        $('scanMerchant').textContent = data.merchantName;
+        $('scanCard').textContent = data.cardNumber;
+        renderScanQR(data.cardNumber);
+
+        $('loading').classList.add('hidden');
+        $('app').classList.remove('hidden');
+        $('showCardCta').classList.remove('hidden');
+      } catch (err) {
+        $('loading').classList.add('hidden');
+        $('errorMessage').textContent = err.message || t.errMsg;
+        $('error').classList.remove('hidden');
+      }
+    }
+
+    function renderScanQR(cardNumber) {
+      const data = encodeURIComponent(cardNumber);
+      $('scanQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=480x480&margin=4&qzone=1&color=0a0a0a&bgcolor=ffffff&ecc=M&data=${data}`;
+    }
+
+    $('showCardBtn').addEventListener('click', () => {
+      $('scanOverlay').classList.add('open');
+      // Boost screen brightness hint via wakelock if available
+      if ('wakeLock' in navigator) navigator.wakeLock.request('screen').catch(() => {});
+    });
+    $('scanClose').addEventListener('click', () => $('scanOverlay').classList.remove('open'));
+    $('scanOverlay').addEventListener('click', (e) => {
+      if (e.target === $('scanOverlay')) $('scanOverlay').classList.remove('open');
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') $('scanOverlay').classList.remove('open');
+    });
+
+    load();
+  </script>
+</body>
+</html>

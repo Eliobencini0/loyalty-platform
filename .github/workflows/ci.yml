@@ -1,0 +1,93 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main, staging]
+  push:
+    branches: [main, staging]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: loyalty_platform_test
+          POSTGRES_USER: loyalty
+          POSTGRES_PASSWORD: testpassword
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U loyalty -d loyalty_platform_test"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DATABASE_URL: postgresql://loyalty:testpassword@localhost:5432/loyalty_platform_test?schema=public
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      # Backend
+      - name: Install backend dependencies
+        run: npm ci
+
+      - name: Cache dashboard node_modules
+        uses: actions/cache@v4
+        with:
+          path: dashboard/node_modules
+          key: dashboard-deps-${{ hashFiles('dashboard/package-lock.json', 'dashboard/package.json') }}
+          restore-keys: dashboard-deps-
+
+      - name: Cache marketing node_modules
+        uses: actions/cache@v4
+        with:
+          path: marketing/node_modules
+          key: marketing-deps-${{ hashFiles('marketing/package-lock.json', 'marketing/package.json') }}
+          restore-keys: marketing-deps-
+
+      - name: Cache Next.js build
+        uses: actions/cache@v4
+        with:
+          path: marketing/.next/cache
+          key: nextjs-${{ hashFiles('marketing/package-lock.json') }}-${{ hashFiles('marketing/src/**') }}
+          restore-keys: |
+            nextjs-${{ hashFiles('marketing/package-lock.json') }}-
+            nextjs-
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Run database migrations
+        run: npx prisma migrate deploy
+
+      - name: Build backend
+        run: npx tsc
+
+      # Dashboard
+      - name: Install dashboard dependencies
+        run: cd dashboard && npm install --legacy-peer-deps
+
+      - name: Build dashboard
+        run: cd dashboard && npm run build
+
+      - name: Lint dashboard
+        run: cd dashboard && npm run lint
+
+      # Marketing
+      - name: Install marketing dependencies
+        run: cd marketing && npm install
+
+      - name: Copy design tokens for marketing build
+        run: cp packages/ui/src/tokens.css marketing/src/app/tokens.css
+
+      - name: Build marketing site
+        run: cd marketing && npm run build

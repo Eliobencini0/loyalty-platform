@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
+  <title>Join the loyalty program</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js" defer></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --bg: #f7f4ee;
+      --surface: #ffffff;
+      --ink: #0a0a0a;
+      --muted: #6b6760;
+      --line: rgba(10, 10, 10, 0.12);
+      --accent: #EFFF74;
+      --error: #b91c1c;
+      --success: #15803d;
+    }
+    html, body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+      min-height: 100dvh;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      padding: clamp(20px, 5vw, 32px) clamp(16px, 4vw, 24px) calc(clamp(24px, 7vw, 40px) + env(safe-area-inset-bottom));
+    }
+    .shell {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .brand {
+      text-align: center;
+      padding: 8px 0 4px;
+    }
+    .brand-kicker {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .brand-name {
+      font-size: clamp(28px, 7vw, 36px);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      margin-top: 6px;
+      line-height: 1.05;
+      overflow-wrap: anywhere;
+    }
+    .card {
+      background: var(--surface);
+      border-radius: 28px;
+      padding: clamp(22px, 5vw, 28px);
+      box-shadow: 0 12px 40px rgba(10, 10, 10, 0.06);
+    }
+    .card h2 {
+      font-size: clamp(20px, 5vw, 24px);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+    .card p.lede {
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.5;
+      margin-bottom: 22px;
+    }
+    .field {
+      position: relative;
+      margin-bottom: 14px;
+    }
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .field-row .field { margin-bottom: 0; }
+    @media (max-width: 360px) {
+      .field-row { grid-template-columns: 1fr; gap: 14px; }
+    }
+    .field-hint {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4;
+      margin-top: 6px;
+      padding-left: 4px;
+    }
+    /* Notched outline (Material 3 style) */
+    .field input {
+      width: 100%;
+      height: 56px;
+      padding: 0 16px;
+      border-radius: 14px;
+      border: 1.5px solid var(--line);
+      background: var(--surface);
+      font: inherit;
+      font-size: 16px;
+      color: var(--ink);
+      transition: border-color 0.15s ease;
+    }
+    .field input::placeholder { color: transparent; }
+    .field input:focus::placeholder { color: var(--muted-2); }
+    .field input:focus {
+      outline: none;
+      border-color: var(--ink);
+    }
+    .field label {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 0 6px;
+      background: var(--surface);
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--muted);
+      pointer-events: none;
+      transition: top 0.18s cubic-bezier(0.4, 0, 0.2, 1),
+                  font-size 0.18s cubic-bezier(0.4, 0, 0.2, 1),
+                  color 0.18s ease,
+                  font-weight 0.18s ease;
+    }
+    .field input:focus ~ label,
+    .field input:not(:placeholder-shown) ~ label {
+      top: 0;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--ink);
+    }
+    .field input:focus ~ label { color: var(--ink); }
+    .consent {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 18px 0 6px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+    .consent input[type="checkbox"] {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      margin-top: 2px;
+      accent-color: var(--ink);
+      cursor: pointer;
+    }
+    .consent a {
+      color: var(--ink);
+      text-decoration: underline;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      height: 56px;
+      border-radius: 16px;
+      border: none;
+      font: inherit;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      cursor: pointer;
+      transition: filter 0.15s ease, transform 0.15s ease;
+    }
+    .btn:active { transform: scale(0.985); }
+    .btn-primary {
+      background: var(--ink);
+      color: var(--accent);
+    }
+    .btn-primary:hover { filter: brightness(1.1); }
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--ink);
+      border: 1.5px solid var(--line);
+    }
+    .btn-ghost:hover { background: rgba(10,10,10,0.04); }
+    .err {
+      color: var(--error);
+      font-size: 14px;
+      margin-top: 12px;
+      text-align: center;
+    }
+    .submit-note {
+      margin-top: 12px;
+      font-size: 12px;
+      line-height: 1.5;
+      color: var(--muted);
+      text-align: left;
+    }
+    .submit-note a {
+      color: var(--muted);
+      text-decoration: underline;
+    }
+    /* Success state */
+    .success-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 18px;
+      font-size: 32px;
+      line-height: 1;
+    }
+    .success-card { text-align: center; }
+    .success-card h2 { margin-bottom: 8px; }
+    .success-card .lede { margin-bottom: 24px; }
+    .wallet-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .wallet-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      height: 56px;
+      border-radius: 16px;
+      background: var(--ink);
+      color: #fff;
+      font: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: filter 0.15s ease, transform 0.15s ease;
+    }
+    .wallet-btn:active { transform: scale(0.985); }
+    .wallet-btn:hover { filter: brightness(1.15); }
+    .wallet-btn svg { flex-shrink: 0; }
+    .secondary-link {
+      display: block;
+      text-align: center;
+      margin-top: 8px;
+      color: var(--ink);
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: underline;
+      padding: 12px;
+    }
+    .loading {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="brand">
+      <div class="brand-kicker">Loyalty program</div>
+      <div class="brand-name" id="merchantName">Loading…</div>
+    </div>
+
+    <!-- Loading state -->
+    <section id="state-loading" class="card loading">Loading…</section>
+
+    <!-- Form state -->
+    <section id="state-form" class="card hidden">
+      <h2>Join now</h2>
+      <p class="lede">Add your details to get your digital loyalty card.</p>
+      <form id="joinForm" novalidate>
+        <div class="field-row">
+          <div class="field">
+            <input id="firstName" type="text" autocomplete="given-name" placeholder=" " required>
+            <label for="firstName">First name *</label>
+          </div>
+          <div class="field">
+            <input id="lastName" type="text" autocomplete="family-name" placeholder=" ">
+            <label for="lastName">Last name</label>
+          </div>
+        </div>
+        <div class="field">
+          <input id="email" type="email" autocomplete="email" inputmode="email" placeholder=" " required>
+          <label for="email">Email *</label>
+        </div>
+        <p class="field-hint" id="emailHint">We'll email you a copy of your card.</p>
+        <label class="consent">
+          <input id="marketing" type="checkbox">
+          <span id="marketingText">I want to receive exclusive discounts and promotions.</span>
+        </label>
+        <button id="submitBtn" type="submit" class="btn btn-primary" style="margin-top: 18px;">Get my card</button>
+        <p class="submit-note" id="submitNote">By tapping <strong>Get my card</strong> you accept our <a href="https://loyali.online/en/terms" target="_blank" rel="noopener">Terms</a> and <a href="https://loyali.online/en/privacy" target="_blank" rel="noopener">Privacy Policy</a>.</p>
+        <div id="formError" class="err hidden"></div>
+      </form>
+    </section>
+
+    <!-- Success state -->
+    <section id="state-success" class="card success-card hidden">
+      <div class="success-icon" aria-hidden="true">✓</div>
+      <h2 id="successTitle">You're in!</h2>
+      <p class="lede" id="successLede">Save your card to your wallet so it's always at hand.</p>
+      <div class="wallet-actions">
+        <a id="appleBtn" class="wallet-btn hidden" href="#" download>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.05 20.28c-.98.95-2.05.86-3.08.43-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.43C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.54 4.09l.01-.01zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+          <span>Add to Apple Wallet</span>
+        </a>
+        <a id="googleBtn" class="wallet-btn hidden" href="#">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22.18 12.27c0-.7-.06-1.4-.19-2.07H12v3.92h5.7a4.87 4.87 0 0 1-2.11 3.2v2.65h3.41c2-1.84 3.16-4.55 3.16-7.7zm-10.2 10.32c2.86 0 5.26-.95 7.01-2.57l-3.4-2.65c-.95.64-2.16 1.02-3.61 1.02-2.78 0-5.13-1.87-5.97-4.39H2.49v2.74A10.58 10.58 0 0 0 11.98 22.6zM6.01 13.99a6.36 6.36 0 0 1 0-4.05V7.2H2.49a10.58 10.58 0 0 0 0 9.53l3.52-2.74zm5.97-7.86c1.56 0 2.96.54 4.06 1.59l3.02-3.02C17.24 2.99 14.84 2 11.98 2A10.58 10.58 0 0 0 2.49 7.2L6.01 9.94c.84-2.52 3.19-4.39 5.97-4.39z"/></svg>
+          <span>Save to Google Pay</span>
+        </a>
+      </div>
+      <a id="loyaltyBtn" class="secondary-link" href="#">View my card →</a>
+    </section>
+
+    <!-- Error state -->
+    <section id="state-error" class="card hidden">
+      <h2>Something went wrong</h2>
+      <p class="lede" id="errorMessage">Please try again in a moment.</p>
+      <button onclick="location.reload()" class="btn btn-ghost">Retry</button>
+    </section>
+  </main>
+
+  <script>
+    const merchantId = window.location.pathname.split('/').pop();
+    const locale = (navigator.language || 'en').slice(0, 2);
+    const supportedLocale = ['en', 'it', 'es'].includes(locale) ? locale : 'en';
+
+    const COPY = {
+      en: {
+        kicker: 'Loyalty program',
+        loading: 'Loading…',
+        joinTitle: 'Join now',
+        joinLede: 'Add your details to get your digital loyalty card.',
+        firstName: 'First name *',
+        lastName: 'Last name',
+        email: 'Email *',
+        emailHint: "Used to link your points to your card correctly.",
+        marketing: (m) => `I want to receive exclusive discounts and promotions from <strong>${m}</strong>.`,
+        submitNote: 'By tapping <strong>Get my card</strong> you accept our <a href="https://loyali.online/en/terms" target="_blank" rel="noopener">Terms</a> and <a href="https://loyali.online/en/privacy" target="_blank" rel="noopener">Privacy Policy</a>.',
+        submit: 'Get my card',
+        submitting: 'Working…',
+        successTitle: "You're in!",
+        successWelcome: 'Welcome back!',
+        successLede: "Save your card to your wallet so it's always at hand.",
+        successLedeReturning: 'Your card is ready in your wallet.',
+        addApple: 'Add to Apple Wallet',
+        saveGoogle: 'Save to Google Pay',
+        viewCard: 'View my card →',
+        errMissing: 'Please fill in name and email.',
+        errConsent: 'Please accept the privacy policy to continue.',
+        errEmail: 'Please enter a valid email address.',
+        errGeneric: 'Something went wrong. Please try again.',
+        merchantNotFound: 'This loyalty program is not available right now.',
+      },
+      it: {
+        kicker: 'Programma fedeltà',
+        loading: 'Caricamento…',
+        joinTitle: 'Iscriviti ora',
+        joinLede: 'Inserisci i tuoi dati per ricevere la tua tessera digitale.',
+        firstName: 'Nome *',
+        lastName: 'Cognome',
+        email: 'Email *',
+        emailHint: 'Serve ad associare correttamente i tuoi punti alla tessera.',
+        marketing: (m) => `Voglio ricevere sconti e promozioni esclusive da <strong>${m}</strong>.`,
+        submitNote: 'Cliccando <strong>Ottieni la tessera</strong> accetti il <a href="https://loyali.online/it/terms" target="_blank" rel="noopener">Regolamento</a> e la <a href="https://loyali.online/it/privacy" target="_blank" rel="noopener">Privacy Policy</a>.',
+        submit: 'Ottieni la tessera',
+        submitting: 'Un attimo…',
+        successTitle: 'Sei dentro!',
+        successWelcome: 'Bentornato!',
+        successLede: "Salva la tessera nel tuo wallet, così l'hai sempre a portata.",
+        successLedeReturning: 'La tua tessera è già nel tuo wallet.',
+        addApple: 'Aggiungi ad Apple Wallet',
+        saveGoogle: 'Salva su Google Pay',
+        viewCard: 'Vedi la mia tessera →',
+        errMissing: 'Inserisci nome ed email.',
+        errConsent: 'Accetta la privacy policy per continuare.',
+        errEmail: 'Inserisci un indirizzo email valido.',
+        errGeneric: 'Qualcosa è andato storto. Riprova.',
+        merchantNotFound: 'Questo programma fedeltà non è disponibile.',
+      },
+      es: {
+        kicker: 'Programa de fidelidad',
+        loading: 'Cargando…',
+        joinTitle: 'Únete ahora',
+        joinLede: 'Introduce tus datos para recibir tu tarjeta digital.',
+        firstName: 'Nombre *',
+        lastName: 'Apellido',
+        email: 'Email *',
+        emailHint: 'Para vincular correctamente tus puntos a tu tarjeta.',
+        marketing: (m) => `Quiero recibir descuentos y promociones exclusivas de <strong>${m}</strong>.`,
+        submitNote: 'Al pulsar <strong>Obtener mi tarjeta</strong> aceptas el <a href="https://loyali.online/es/terms" target="_blank" rel="noopener">Reglamento</a> y la <a href="https://loyali.online/es/privacy" target="_blank" rel="noopener">Política de Privacidad</a>.',
+        submit: 'Obtener mi tarjeta',
+        submitting: 'Un momento…',
+        successTitle: '¡Listo!',
+        successWelcome: '¡Bienvenido de nuevo!',
+        successLede: 'Guarda la tarjeta en tu wallet para tenerla siempre a mano.',
+        successLedeReturning: 'Tu tarjeta ya está en tu wallet.',
+        addApple: 'Añadir a Apple Wallet',
+        saveGoogle: 'Guardar en Google Pay',
+        viewCard: 'Ver mi tarjeta →',
+        errMissing: 'Introduce nombre y email.',
+        errConsent: 'Acepta la política de privacidad para continuar.',
+        errEmail: 'Introduce un email válido.',
+        errGeneric: 'Algo ha salido mal. Inténtalo de nuevo.',
+        merchantNotFound: 'Este programa de fidelidad no está disponible.',
+      },
+    };
+    const t = COPY[supportedLocale];
+
+    const $ = (id) => document.getElementById(id);
+    const escapeMerchant = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const showState = (which) => {
+      ['loading', 'form', 'success', 'error'].forEach((s) => {
+        $(`state-${s}`).classList.toggle('hidden', s !== which);
+      });
+    };
+
+    function applyStaticCopy() {
+      document.documentElement.lang = supportedLocale;
+      document.querySelector('.brand-kicker').textContent = t.kicker;
+      $('state-loading').textContent = t.loading;
+      const formCard = $('state-form');
+      formCard.querySelector('h2').textContent = t.joinTitle;
+      formCard.querySelector('.lede').textContent = t.joinLede;
+      formCard.querySelector('label[for="firstName"]').textContent = t.firstName;
+      formCard.querySelector('label[for="lastName"]').textContent = t.lastName;
+      formCard.querySelector('label[for="email"]').textContent = t.email;
+      $('emailHint').textContent = t.emailHint;
+      $('submitBtn').textContent = t.submit;
+      $('submitNote').innerHTML = t.submitNote;
+    }
+
+    async function init() {
+      applyStaticCopy();
+      try {
+        const res = await fetch(`/api/loyalty/${merchantId}/public-summary`);
+        if (!res.ok) throw new Error('not_found');
+        const data = await res.json();
+        if (!data.hasLoyaltyProgram) throw new Error('no_program');
+        $('merchantName').textContent = data.name;
+        $('marketingText').innerHTML = t.marketing(escapeMerchant(data.name));
+        showState('form');
+      } catch {
+        $('errorMessage').textContent = t.merchantNotFound;
+        showState('error');
+      }
+    }
+
+    function isValidEmail(v) {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+    }
+
+    function miniConfetti(el) {
+      if (typeof confetti !== 'function') return;
+      const rect = el.getBoundingClientRect();
+      const x = (rect.left + rect.width / 2) / window.innerWidth;
+      const y = (rect.top + rect.height / 2) / window.innerHeight;
+      confetti({
+        particleCount: 24,
+        spread: 55,
+        startVelocity: 22,
+        scalar: 0.7,
+        ticks: 80,
+        origin: { x, y },
+        colors: ['#EFFF74', '#0a0a0a', '#7750e7'],
+      });
+    }
+    $('marketing').addEventListener('change', (e) => {
+      if (e.target.checked) miniConfetti(e.target);
+    });
+
+    $('joinForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const firstName = $('firstName').value.trim();
+      const lastName = $('lastName').value.trim();
+      const email = $('email').value.trim();
+      const marketing = $('marketing').checked;
+      const errEl = $('formError');
+
+      const showErr = (msg) => {
+        errEl.textContent = msg;
+        errEl.classList.remove('hidden');
+      };
+      errEl.classList.add('hidden');
+
+      if (!firstName || !email) return showErr(t.errMissing);
+      if (!isValidEmail(email)) return showErr(t.errEmail);
+
+      const btn = $('submitBtn');
+      btn.disabled = true;
+      btn.textContent = t.submitting;
+
+      try {
+        const res = await fetch(`/api/loyalty/${merchantId}/join`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ firstName, lastName, email, marketingConsent: marketing }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'failed');
+
+        // Wire success state
+        $('successTitle').textContent = data.alreadyEnrolled ? t.successWelcome : t.successTitle;
+        $('successLede').textContent = data.alreadyEnrolled ? t.successLedeReturning : t.successLede;
+
+        const ua = navigator.userAgent;
+        const isApple = /iPhone|iPad|iPod|Macintosh/.test(ua);
+        const isAndroid = /Android/.test(ua);
+        const showApple = isApple || (!isApple && !isAndroid);
+        const showGoogle = isAndroid || (!isApple && !isAndroid);
+
+        if (showApple) {
+          $('appleBtn').href = data.applePassUrl;
+          $('appleBtn').querySelector('span').textContent = t.addApple;
+          $('appleBtn').classList.remove('hidden');
+        }
+        if (showGoogle) {
+          $('googleBtn').classList.remove('hidden');
+          $('googleBtn').querySelector('span').textContent = t.saveGoogle;
+          // google-pass returns JSON { saveUrl }; resolve and redirect on click
+          $('googleBtn').addEventListener('click', async (ev) => {
+            ev.preventDefault();
+            try {
+              const r = await fetch(data.googleSaveUrl);
+              const j = await r.json();
+              if (j.saveUrl) window.location.href = j.saveUrl;
+            } catch {
+              /* ignore */
+            }
+          });
+        }
+        $('loyaltyBtn').href = data.loyaltyUrl;
+        $('loyaltyBtn').textContent = t.viewCard;
+
+        showState('success');
+        if (typeof confetti === 'function') {
+          const colors = ['#EFFF74', '#0a0a0a', '#f7f4ee', '#7750e7'];
+          confetti({ particleCount: 80, spread: 70, startVelocity: 45, origin: { y: 0.35 }, colors });
+          setTimeout(() => confetti({ particleCount: 60, spread: 100, angle: 60, origin: { x: 0, y: 0.6 }, colors }), 200);
+          setTimeout(() => confetti({ particleCount: 60, spread: 100, angle: 120, origin: { x: 1, y: 0.6 }, colors }), 350);
+        }
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = t.submit;
+        const msg = err && err.message && err.message !== 'failed' ? err.message : t.errGeneric;
+        showErr(msg);
+        console.error('join failed:', err);
+      }
+    });
+
+    init();
+  </script>
+  <script>
+    // Keep focused input visible above the virtual keyboard.
+    (function () {
+      var sel = 'input:not([type="hidden"]):not([type="checkbox"]):not([type="radio"]),textarea,select';
+      var t = 0;
+      function scrollFocused() {
+        var el = document.activeElement;
+        if (el && el.matches && el.matches(sel)) el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      }
+      document.addEventListener('focusin', function (e) {
+        if (!e.target.matches || !e.target.matches(sel)) return;
+        clearTimeout(t); t = setTimeout(scrollFocused, 250);
+      });
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', function () {
+          clearTimeout(t); t = setTimeout(scrollFocused, 50);
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

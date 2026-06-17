@@ -1,0 +1,259 @@
+{
+  "nav": {
+    "brand": "Loyali",
+    "features": "Funzionalità",
+    "pricing": "Prezzi",
+    "contact": "Contatti",
+    "login": "Accedi",
+    "cta": "Richiedi una demo"
+  },
+  "hero": {
+    "badge": "Pensato per le attività locali in Italia",
+    "titlePrefix": "Loyali.",
+    "titleShimmer": "Perché ogni visita conta.",
+    "subtitleLine1": "Trasforma i nuovi clienti in clienti abituali.",
+    "subtitleLine2": "Aumenta le visite ricorrenti, migliora il tuo posizionamento su Google e attiva il passaparola.",
+    "ctaSecondary": "Parliamone",
+    "ctaPrimary": "Inizia la magia",
+    "trust": "Nessuna carta di credito richiesta",
+    "videoAria": "Demo della tessera fedeltà Loyali"
+  },
+  "howItWorks": {
+    "sectionTitle": "Come funziona Loyali",
+    "sectionSubtitle": "Da zero al tuo primo cliente fedele in un pomeriggio.",
+    "step1": {
+      "title": "Pianifica come fidelizzare i tuoi clienti",
+      "body": "Tu decidi cosa premiare e quando. Loyali trasforma le tue regole in un programma attivo 24/7."
+    },
+    "step2": {
+      "title": "I clienti la aggiungono ad Apple o Google Wallet",
+      "body": "Una scansione e la tessera fedeltà digitale entra nel Wallet di Apple o Google. Niente app, niente moduli."
+    },
+    "step3": {
+      "title": "Falli tornare in automatico",
+      "body": "Notifiche push, richieste di recensione su Google, visite che si ripetono, amici che arrivano. Senza muovere un dito."
+    }
+  },
+  "reassurance": {
+    "price": "€9/mese",
+    "trial": "14 giorni gratis",
+    "cancel": "Disdici quando vuoi",
+    "noCard": "Nessuna carta richiesta"
+  },
+  "benefits": {
+    "sectionTitle": "Tre modi per far crescere la tua attività",
+    "sectionSubtitle": "Molto più di una raccolta punti: un sistema completo per coinvolgere i clienti, costruire la tua reputazione e crescere.",
+    "loyalty": {
+      "title": "Resta nella mente dei clienti",
+      "subtitle": "Programma fedeltà digitale",
+      "body": "Un canale diretto nel telefono di ogni cliente. Ricorda, premia e falli tornare — in automatico.",
+      "bullet1": "Notifiche push sui Wallet dei clienti",
+      "bullet2": "Campagne di riattivazione automatiche",
+      "bullet3": "Monitora frequenza di visita e preferenze"
+    },
+    "reputation": {
+      "title": "Costruisci la tua reputazione",
+      "subtitle": "Gestione intelligente delle recensioni",
+      "body": "Le recensioni a 5 stelle diventano pubbliche, i reclami restano privati. Scala Google Maps senza mettere a rischio la tua reputazione.",
+      "bullet1": "Recensioni a 5 stelle dirette su Google Maps",
+      "bullet2": "Valutazioni più basse raccolte internamente",
+      "bullet3": "Migliora la SEO locale e la visibilità"
+    },
+    "growth": {
+      "title": "Trasforma i clienti in ambasciatori",
+      "subtitle": "Referral e passaparola",
+      "body": "Premia chi porta nuovi amici. Trasforma i tuoi clienti abituali nel canale di marketing più economico e affidabile.",
+      "bullet1": "Ricompense referral per entrambe le parti",
+      "bullet2": "Monitora la crescita da amico-porta-amico",
+      "bullet3": "Crescita organica tramite reti di fiducia"
+    }
+  },
+  "features": {
+    "sectionTitle": "Tutto ciò che ti serve per far crescere fedeltà, reputazione e referral.",
+    "sectionSubtitle": "Pensato per le attività locali. Zero competenze tecniche richieste.",
+    "wallet": {
+      "title": "Apple & Google Wallet",
+      "body": "I clienti aggiungono la tua tessera al Wallet del telefono. Nessuna app, nessun login — basta scansionare e guadagnare."
+    },
+    "push": {
+      "title": "Notifiche push",
+      "body": "I messaggi arrivano direttamente sul Wallet dei tuoi clienti. Annuncia offerte, riconquista chi non torna, festeggia i traguardi."
+    },
+    "qr": {
+      "title": "Check-in con codice QR",
+      "body": "Scansiona alla cassa per assegnare punti, bollini o premi. Zero hardware, zero dispositivi aggiuntivi."
+    },
+    "rewards": {
+      "title": "Premi flessibili",
+      "body": "Punti, bollini, livelli — progetta il programma a modo tuo. Cambia tutto senza ristampare le tessere."
+    },
+    "analytics": {
+      "title": "Analytics clienti",
+      "body": "Individua i tuoi migliori clienti, monitora le abitudini di visita e scopri cosa li fa tornare."
+    },
+    "reviews": {
+      "title": "Gestione intelligente delle recensioni",
+      "body": "Indirizza le recensioni a 5 stelle su Google e mantieni privati i reclami. Migliora il posizionamento senza rischiare la reputazione."
+    }
+  },
+  "pricing": {
+    "sectionTitle": "Prezzi semplici e trasparenti",
+    "sectionSubtitle": "Due piani. Nessun costo nascosto. Prova gratuita di 14 giorni, senza carta di credito.",
+    "perMonth": "/mese",
+    "core": {
+      "name": "Core",
+      "tagline": "Tutto ciò che ti serve per lanciare il tuo programma fedeltà.",
+      "feature1": "Tessere Apple & Google Wallet",
+      "feature2": "Check-in tramite codice QR",
+      "feature3": "Punti, bollini e premi",
+      "feature4": "Gestione delle recensioni",
+      "feature5": "Analytics di base",
+      "feature6": "Supporto via email",
+      "cta": "Inizia la prova gratuita"
+    },
+    "grow": {
+      "name": "Grow",
+      "tagline": "Attiva campagne push e moltiplica le visite ricorrenti.",
+      "feature1": "Tutto ciò che include Core",
+      "feature2": "Campagne di notifiche push",
+      "feature3": "Flussi di riattivazione automatici",
+      "feature4": "Analytics avanzati",
+      "feature5": "Ricompense referral",
+      "feature6": "Supporto prioritario",
+      "cta": "Inizia la prova gratuita"
+    }
+  },
+  "testimonials": {
+    "sectionTitle": "Amato dalle attività locali",
+    "one": {
+      "quote": "Abbiamo visto un aumento del 30% delle visite ricorrenti già nel primo mese. L'attivazione ha richiesto meno di 10 minuti.",
+      "author": "Maria S.",
+      "role": "Titolare, Café Bonita"
+    },
+    "two": {
+      "quote": "I nostri clienti adorano la raccolta bollini digitale. Niente più tessere di carta smarrite — e finalmente abbiamo dati reali sulla fedeltà.",
+      "author": "James T.",
+      "role": "Manager, The Craft Tap"
+    },
+    "three": {
+      "quote": "Vale la pena solo per gli analytics. Finalmente sappiamo quali premi fanno davvero tornare i clienti.",
+      "author": "Priya K.",
+      "role": "Titolare, Spice Route"
+    }
+  },
+  "finalCta": {
+    "title": "Pronto a far crescere il tuo giro di clienti abituali?",
+    "body": "Unisciti a Loyali. Prova gratuita di 14 giorni.",
+    "button": "Inizia la prova gratuita",
+    "trust": "Nessuna carta di credito richiesta"
+  },
+  "footer": {
+    "tagline": "Ogni visita conta.",
+    "joinTitle": "ENTRA NELLA COMMUNITY",
+    "joinSubtitle": "Lascia la tua email e ti terremo aggiornato.",
+    "emailLabel": "La tua email",
+    "emailPlaceholder": "La tua email",
+    "joinButton": "Iscriviti",
+    "joinSubmitting": "Invio…",
+    "joinSuccess": "Grazie! Ti scriveremo presto.",
+    "joinError": "Qualcosa è andato storto. Riprova.",
+    "contactTitle": "CONTATTI",
+    "linkPrivacy": "Privacy",
+    "linkTerms": "Termini",
+    "copyright": "Tutti i diritti riservati."
+  },
+  "contact": {
+    "pageTitle": "Mettiti in contatto",
+    "pageSubtitle": "Hai una domanda? Siamo qui per te. Scegli il canale che preferisci.",
+    "whatsappLabel": "Risposta più veloce",
+    "whatsappCta": "Scrivici su WhatsApp",
+    "whatsappBody": "Clicca per scriverci direttamente. Di solito rispondiamo in pochi minuti.",
+    "whatsappPrefilledMessage": "Ciao Loyali! Voglio trasformare i nuovi clienti in abituali, migliorare il mio ranking su Google e attivare il passaparola. Come funziona?",
+    "emailFormTitle": "Oppure scrivici un messaggio",
+    "emailFormSubtitle": "Ti rispondiamo entro 24 ore.",
+    "emailField": "La tua email",
+    "emailPlaceholder": "tu@tuaattivita.com",
+    "messageField": "Il tuo messaggio",
+    "messagePlaceholder": "Raccontaci della tua attività e di cosa hai bisogno…",
+    "submitButton": "Invia messaggio",
+    "submittingButton": "Invio in corso…",
+    "successTitle": "Messaggio inviato!",
+    "successBody": "Grazie per averci scritto. Ti contatteremo presto.",
+    "errorBody": "Qualcosa è andato storto. Riprova o scrivici su WhatsApp."
+  },
+  "floatingChat": {
+    "ariaLabel": "Scrivici su WhatsApp"
+  },
+  "languageSwitcher": {
+    "label": "Lingua",
+    "en": "English",
+    "it": "Italiano",
+    "es": "Español"
+  },
+  "metadata": {
+    "title": "Loyali - Tessere fedeltà digitali per Apple & Google Wallet",
+    "titleTemplate": "%s | Loyali",
+    "description": "Fidelizza i tuoi clienti con tessere digitali nel Wallet. Punti, bollini e analytics via codice QR per attività locali. 85% di retention. Online in 24 ore.",
+    "shortDescription": "Fidelizza i clienti con tessere digitali nel Wallet. Punti, bollini e analytics via QR. 85% di retention. Online in 24 ore.",
+    "twitterDescription": "Fidelizza i clienti con tessere digitali nel Wallet. Punti, bollini e analytics via QR. 85% di retention.",
+    "ogImageAlt": "Loyali - Piattaforma di fidelizzazione digitale per Apple Wallet e Google Wallet"
+  },
+  "faq": {
+    "q1": {
+      "question": "Cos'è Loyali?",
+      "answer": "Loyali è una piattaforma di tessere fedeltà digitali che permette alle attività locali di creare programmi di fidelizzazione tramite Apple Wallet e Google Wallet. I clienti non devono scaricare nessuna app: basta scansionare un codice QR per iscriversi e iniziare ad accumulare premi."
+    },
+    "q2": {
+      "question": "Quanto tempo serve per attivare Loyali?",
+      "answer": "Loyali si attiva in meno di 5 minuti. Crea la tua tessera, stampa il codice QR e inizia subito a iscrivere i clienti. Nessuna installazione hardware né formazione tecnica."
+    },
+    "q3": {
+      "question": "I clienti devono scaricare un'app?",
+      "answer": "No. I clienti aggiungono la tua tessera fedeltà direttamente su Apple Wallet o Google Wallet scansionando un codice QR. Niente app da scaricare, niente login — basta scansionare e guadagnare."
+    },
+    "q4": {
+      "question": "Che tipo di attività usa Loyali?",
+      "answer": "Loyali è pensato per negozi e attività fisiche: bar, ristoranti, pasticcerie, negozi al dettaglio, saloni e altre attività locali che vogliono aumentare la fidelizzazione e le visite ricorrenti."
+    },
+    "q5": {
+      "question": "Quanto costa Loyali?",
+      "answer": "Loyali offre due piani: Core (€9/mese) con tutto ciò che serve per lanciare il programma fedeltà, e Grow (€12/mese) con campagne di notifiche push e analytics avanzati. Tutti i piani includono una prova gratuita di 14 giorni, senza carta di credito."
+    }
+  },
+  "privacy": {
+    "title": "Informativa sulla privacy",
+    "updated": "Ultimo aggiornamento: aprile 2026",
+    "intro": {
+      "title": "Introduzione",
+      "body": "Questa informativa spiega come Loyali e i merchant che utilizzano Loyali (\"noi\") raccolgono, usano e proteggono i tuoi dati personali quando ti iscrivi a un programma fedeltà tramite la nostra piattaforma."
+    },
+    "controller": {
+      "title": "Titolare del trattamento",
+      "body": "Quando ti iscrivi al programma fedeltà di un merchant, quel merchant è il titolare del trattamento dei tuoi dati. Loyali (gestito da Loyalnes) agisce come responsabile del trattamento per conto del merchant, fornendo la piattaforma tecnica.\n\nPer domande su come un merchant specifico usa i tuoi dati, contatta direttamente il merchant."
+    },
+    "data": {
+      "title": "Dati raccolti",
+      "body": "Raccogliamo solo le informazioni che fornisci all'iscrizione: nome, cognome (opzionale), indirizzo email e numero di telefono (opzionale). Conserviamo inoltre l'attività di fidelizzazione (punti, premi riscattati, storico visite) generata dall'uso del programma."
+    },
+    "purposes": {
+      "title": "Finalità del trattamento",
+      "body": "I tuoi dati vengono usati per: (1) emettere e gestire la tua tessera digitale, inclusi i pass Apple Wallet e Google Pay; (2) tracciare punti, premi e attività; (3) inviarti comunicazioni transazionali relative alla tua tessera; (4) fornire al merchant analytics aggregati e anonimizzati."
+    },
+    "legal": {
+      "title": "Base giuridica",
+      "body": "Trattiamo i tuoi dati sulla base del tuo consenso esplicito (art. 6, par. 1, lett. a GDPR), fornito spuntando la casella nel form di iscrizione. Puoi revocare il consenso in qualsiasi momento."
+    },
+    "retention": {
+      "title": "Conservazione",
+      "body": "I tuoi dati sono conservati finché la tessera è attiva e fino a 24 mesi di inattività, dopo i quali vengono anonimizzati o cancellati salvo obblighi di legge."
+    },
+    "rights": {
+      "title": "I tuoi diritti",
+      "body": "Ai sensi del GDPR hai diritto di accedere, rettificare, cancellare, limitare o portare i tuoi dati, e di opporti al trattamento. Per esercitare questi diritti contatta il merchant o scrivi a privacy@loyali.online."
+    },
+    "contact": {
+      "title": "Contatti",
+      "body": "Loyalnes — privacy@loyali.online"
+    }
+  }
+}

@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Play & Win!</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(12px, 4vw, 20px);
+    }
+
+    .container {
+      max-width: 500px;
+      width: 100%;
+      background: white;
+      border-radius: clamp(14px, 4vw, 16px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: clamp(20px, 5vw, 24px);
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: clamp(22px, 6vw, 24px);
+      margin-bottom: 8px;
+      line-height: 1.15;
+      overflow-wrap: anywhere;
+    }
+
+    .header p {
+      opacity: 0.9;
+      font-size: 14px;
+    }
+
+    .content {
+      padding: clamp(24px, 6vw, 32px) clamp(16px, 5vw, 24px);
+    }
+
+    .game-canvas-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto 16px;
+      aspect-ratio: 1;
+    }
+
+    .progress-container {
+      width: 100%;
+      max-width: 300px;
+      margin: 0 auto 24px;
+    }
+
+    .progress-bar-wrapper {
+      width: 100%;
+      height: 8px;
+      background: #e0e0e0;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 8px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+      width: 0%;
+      transition: width 0.1s ease-out;
+    }
+
+    .progress-text {
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+      font-weight: 600;
+    }
+
+    .prize-under-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .prize-under-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+
+    .prize-under-name {
+      font-size: clamp(18px, 5vw, 20px);
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 8px;
+    }
+
+    .prize-under-desc {
+      font-size: 14px;
+      color: #666;
+    }
+
+    #scratchCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 6px;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+
+    .input-hint {
+      font-size: 12px;
+      color: #666;
+      margin-top: 4px;
+      font-style: italic;
+    }
+
+    .validation-error {
+      background: #fee;
+      border-left: 3px solid #c33;
+      color: #c33;
+      padding: 12px;
+      border-radius: 4px;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+
+    .btn {
+      width: 100%;
+      min-height: 48px;
+      padding: 14px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .prize-reveal {
+      text-align: center;
+      padding: 24px;
+    }
+
+    .prize-icon {
+      font-size: 64px;
+      margin-bottom: 16px;
+    }
+
+    .prize-name {
+      font-size: clamp(24px, 7vw, 28px);
+      font-weight: 700;
+      color: #333;
+      margin-bottom: 8px;
+      overflow-wrap: anywhere;
+    }
+
+    .prize-desc {
+      color: #666;
+      margin-bottom: 8px;
+      font-size: 16px;
+    }
+
+    .prize-validity {
+      color: #888;
+      font-size: 14px;
+      font-style: italic;
+      margin-bottom: 24px;
+    }
+
+    .error {
+      background: #fee;
+      color: #c33;
+      padding: 12px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-size: 14px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #666;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .wallet-buttons {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .wallet-btn {
+      flex: 1;
+      padding: 12px;
+      border: 2px solid #333;
+      border-radius: 8px;
+      background: white;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .wallet-btn:hover {
+      background: #f5f5f5;
+    }
+
+    @media (max-width: 380px) {
+      .header p,
+      .progress-text,
+      .prize-under-desc,
+      .prize-validity,
+      .error,
+      .validation-error {
+        font-size: 13px;
+      }
+
+      .wallet-buttons {
+        flex-direction: column;
+      }
+
+      .prize-reveal {
+        padding: 20px 16px;
+      }
+    }
+
+    /* Confetti animation */
+    .confetti {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      background: #f0f;
+      animation: confetti-fall 3s linear forwards;
+    }
+
+    @keyframes confetti-fall {
+      to {
+        transform: translateY(100vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="container">
+    <div class="header" id="header">
+      <h1 id="merchantName">Loading...</h1>
+      <p id="gameTypeLabel">Scratch to reveal your prize!</p>
+    </div>
+
+    <div class="content">
+      <!-- Loading State -->
+      <div id="loadingState" class="loading">
+        <p>Loading...</p>
+      </div>
+
+      <!-- Error State -->
+      <div id="errorState" class="hidden">
+        <div class="error" id="errorMessage"></div>
+        <button class="btn" onclick="window.location.reload()">Try Again</button>
+      </div>
+
+      <!-- Game State -->
+      <div id="gameState" class="hidden">
+        <div class="game-canvas-wrapper">
+          <div class="prize-under-canvas">
+            <div class="prize-under-icon" id="prizeUnderIcon">🎁</div>
+            <div class="prize-under-name" id="prizeUnderName">Loading...</div>
+            <div class="prize-under-desc" id="prizeUnderDesc"></div>
+          </div>
+          <canvas id="scratchCanvas"></canvas>
+        </div>
+        <div class="progress-container">
+          <div class="progress-bar-wrapper">
+            <div class="progress-bar" id="progressBar"></div>
+          </div>
+          <div class="progress-text" id="progressText">0% scratched - Keep going!</div>
+        </div>
+        <p style="text-align: center; color: #666; font-size: 14px;">
+          Scratch the card to reveal your prize!
+        </p>
+      </div>
+
+      <!-- Form State -->
+      <div id="formState" class="hidden">
+        <div class="prize-reveal">
+          <div class="prize-icon">🎁</div>
+          <div class="prize-name" id="prizeName"></div>
+          <div class="prize-desc" id="prizeDesc"></div>
+          <div class="prize-validity" id="prizeValidity"></div>
+        </div>
+
+        <div id="validationError" class="validation-error hidden"></div>
+
+        <form id="claimForm">
+          <div class="form-group">
+            <label for="email">Email *</label>
+            <input type="email" id="email" required placeholder="your@email.com">
+          </div>
+          <div class="form-group">
+            <label for="firstName">First Name *</label>
+            <input type="text" id="firstName" required placeholder="John">
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" placeholder="Doe">
+          </div>
+          <div class="form-group">
+            <label for="phone">Phone</label>
+            <input type="tel" id="phone" placeholder="+1 234 567 8900">
+          </div>
+          <div class="form-group">
+            <label for="dateOfBirth">Date of Birth</label>
+            <input type="date" id="dateOfBirth">
+            <div class="input-hint">Receive special benefits during your birthday week 🎂</div>
+          </div>
+          <button type="submit" class="btn" id="submitBtn">Claim Prize</button>
+        </form>
+      </div>
+
+      <!-- Success State -->
+      <div id="successState" class="hidden">
+        <div class="prize-reveal">
+          <div class="prize-icon">✅</div>
+          <div class="prize-name">Prize Claimed!</div>
+          <div class="prize-desc" id="successMessage"></div>
+          <div style="background: #f5f5f5; padding: 16px; border-radius: 8px; margin: 16px 0;">
+            <div style="font-size: 12px; color: #666; margin-bottom: 8px;">Redemption Code</div>
+            <div style="font-size: 24px; font-weight: 700; letter-spacing: 2px;" id="redemptionCode"></div>
+          </div>
+          <div class="wallet-buttons">
+            <button class="wallet-btn" id="appleWalletBtn" onclick="addToAppleWallet()" style="display:none;">🍎 Apple Wallet</button>
+            <button class="wallet-btn" id="googleWalletBtn" onclick="addToGoogleWallet()" style="display:none;">📱 Google Pay</button>
+            <button class="wallet-btn" id="loyaltyPageBtn" onclick="openLoyaltyPage()" style="display:none;">⭐ My Loyalty Page</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Get merchantId from URL
+    const urlParts = window.location.pathname.split('/');
+    const merchantId = urlParts[urlParts.length - 1];
+
+    let campaign = null;
+    let wonPrize = null;
+    let prizeWinId = null;
+    let loyaltyPagePath = null;
+    let customerAccessToken = null;
+
+    // State management
+    function showState(stateName) {
+      ['loadingState', 'errorState', 'gameState', 'formState', 'successState'].forEach(id => {
+        document.getElementById(id).classList.add('hidden');
+      });
+      document.getElementById(stateName).classList.remove('hidden');
+    }
+
+    function showError(message) {
+      document.getElementById('errorMessage').textContent = message;
+      showState('errorState');
+    }
+
+    // Confetti animation
+    function createConfetti() {
+      const colors = ['#f0f', '#0ff', '#ff0', '#0f0', '#f00', '#00f'];
+      const container = document.getElementById('container');
+
+      for (let i = 0; i < 50; i++) {
+        setTimeout(() => {
+          const confetti = document.createElement('div');
+          confetti.className = 'confetti';
+          confetti.style.left = Math.random() * 100 + '%';
+          confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+          confetti.style.animationDelay = Math.random() * 0.5 + 's';
+          container.appendChild(confetti);
+
+          setTimeout(() => confetti.remove(), 3000);
+        }, i * 30);
+      }
+    }
+
+    // Select a prize client-side using probability weights
+    function selectWeightedPrize(prizes) {
+      const totalWeight = prizes.reduce((sum, p) => sum + p.probability, 0);
+      let random = Math.random() * totalWeight;
+      for (const prize of prizes) {
+        random -= prize.probability;
+        if (random <= 0) return prize;
+      }
+      return prizes[0];
+    }
+
+    // Load campaign and select prize client-side
+    async function loadCampaign() {
+      try {
+        const res = await fetch(`/api/gamification/${merchantId}`);
+        if (res.status === 404) {
+          // No active campaign — fall back to plain join flow
+          window.location.replace(`/app/join/${merchantId}`);
+          return;
+        }
+        if (!res.ok) throw new Error('Campaign not found');
+
+        campaign = await res.json();
+        document.getElementById('merchantName').textContent = campaign.merchant.name;
+        document.getElementById('gameTypeLabel').textContent =
+          campaign.gameType === 'SCRATCH_CARD' ? 'Scratch to reveal your prize!' : 'Spin to win!';
+
+        // Select prize client-side using probability weights
+        const selectedPrize = selectWeightedPrize(campaign.prizes);
+        wonPrize = {
+          prizeId: selectedPrize.id,
+          prizeName: selectedPrize.name,
+          prizeDescription: selectedPrize.description || '',
+          prizeType: selectedPrize.prizeType,
+          imageUrl: selectedPrize.imageUrl,
+          validityDays: 15, // default, actual validity set server-side on claim
+        };
+
+        // Display prize under canvas
+        const icon = wonPrize.prizeType === 'PHYSICAL' ? '🎁' : '🎟️';
+        document.getElementById('prizeUnderIcon').textContent = icon;
+        document.getElementById('prizeUnderName').textContent = wonPrize.prizeName;
+        document.getElementById('prizeUnderDesc').textContent = wonPrize.prizeDescription;
+
+        initGame();
+      } catch (err) {
+        showError(err.message || 'Failed to load campaign');
+      }
+    }
+
+    // Initialize game
+    function initGame() {
+      showState('gameState');
+      if (campaign.gameType === 'SCRATCH_CARD') {
+        initScratchCard();
+      }
+    }
+
+    // Scratch card implementation
+    function initScratchCard() {
+      const canvas = document.getElementById('scratchCanvas');
+      const ctx = canvas.getContext('2d');
+
+      // Set canvas size
+      const size = 300;
+      canvas.width = size;
+      canvas.height = size;
+
+      // Draw scratch layer
+      ctx.fillStyle = '#ccc';
+      ctx.fillRect(0, 0, size, size);
+      ctx.font = '20px Arial';
+      ctx.fillStyle = '#666';
+      ctx.textAlign = 'center';
+      ctx.fillText('SCRATCH HERE', size / 2, size / 2);
+
+      let isDrawing = false;
+      let scratchedPercentage = 0;
+      let prizeRevealed = false;
+
+      function scratch(x, y) {
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath();
+        ctx.arc(x, y, 20, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      function getScratchedPercentage() {
+        const imageData = ctx.getImageData(0, 0, size, size);
+        let transparent = 0;
+        for (let i = 3; i < imageData.data.length; i += 4) {
+          if (imageData.data[i] === 0) transparent++;
+        }
+        return (transparent / (size * size)) * 100;
+      }
+
+      function getCenterAreaScratched() {
+        // Check center area (40% of canvas centered)
+        const centerSize = size * 0.6; // 60% width/height centered
+        const startX = (size - centerSize) / 2;
+        const startY = (size - centerSize) / 2;
+
+        const imageData = ctx.getImageData(startX, startY, centerSize, centerSize);
+        let transparent = 0;
+        for (let i = 3; i < imageData.data.length; i += 4) {
+          if (imageData.data[i] === 0) transparent++;
+        }
+        const centerPercentage = (transparent / (centerSize * centerSize)) * 100;
+        return centerPercentage;
+      }
+
+      function handleMove(e) {
+        if (!isDrawing) return;
+        const rect = canvas.getBoundingClientRect();
+        const x = (e.clientX || e.touches[0].clientX) - rect.left;
+        const y = (e.clientY || e.touches[0].clientY) - rect.top;
+        scratch(x * (size / rect.width), y * (size / rect.height));
+
+        scratchedPercentage = getScratchedPercentage();
+        const centerScratched = getCenterAreaScratched();
+
+        // Update progress bar with center area percentage
+        updateProgress(centerScratched);
+
+        // Trigger reveal when center area is 60% scratched (enough to read the prize name)
+        if (centerScratched > 60 && !prizeRevealed) {
+          prizeRevealed = true;
+          revealPrize();
+        }
+      }
+
+      function updateProgress(percentage) {
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+
+        progressBar.style.width = percentage + '%';
+
+        if (percentage < 60) {
+          progressText.textContent = `${Math.round(percentage)}% scratched - Scratch the center!`;
+        } else {
+          progressText.textContent = `${Math.round(percentage)}% - Prize revealed! 🎉`;
+        }
+      }
+
+      canvas.addEventListener('mousedown', () => isDrawing = true);
+      canvas.addEventListener('mouseup', () => isDrawing = false);
+      canvas.addEventListener('mousemove', handleMove);
+      canvas.addEventListener('touchstart', (e) => { e.preventDefault(); isDrawing = true; });
+      canvas.addEventListener('touchend', () => isDrawing = false);
+      canvas.addEventListener('touchmove', handleMove);
+    }
+
+    // Reveal prize and show form with confetti
+    function revealPrize() {
+      // Show confetti
+      createConfetti();
+
+      // Wait a bit for confetti, then show form
+      setTimeout(() => {
+        showPrizeForm();
+      }, 500);
+    }
+
+    // Show prize and form
+    function showPrizeForm() {
+      document.getElementById('prizeName').textContent = wonPrize.prizeName;
+      document.getElementById('prizeDesc').textContent = wonPrize.prizeDescription || '';
+
+      // Add validity information
+      const validityDays = wonPrize.validityDays || 15;
+      document.getElementById('prizeValidity').textContent =
+        `Valid in your next visit, within the next ${validityDays} days.`;
+
+      showState('formState');
+    }
+
+    // Handle form submission
+    document.getElementById('claimForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value.trim();
+      const firstName = document.getElementById('firstName').value.trim();
+
+      // Validate required fields
+      if (!email || !firstName) {
+        document.getElementById('validationError').textContent =
+          'I tuoi dati servono per assegnarti il premio vinto. (Your data is needed to assign you the prize won)';
+        document.getElementById('validationError').classList.remove('hidden');
+        return;
+      }
+
+      // Hide validation error
+      document.getElementById('validationError').classList.add('hidden');
+
+      const submitBtn = document.getElementById('submitBtn');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Claiming...';
+
+      try {
+        const formData = {
+          prizeId: wonPrize.prizeId,
+          email: email,
+          firstName: firstName,
+          lastName: document.getElementById('lastName').value || undefined,
+          phone: document.getElementById('phone').value || undefined,
+          dateOfBirth: document.getElementById('dateOfBirth').value || undefined,
+        };
+
+        const res = await fetch(`/api/gamification/${merchantId}/claim`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData),
+        });
+
+        if (!res.ok) {
+          const err = await res.json();
+          throw new Error(err.error || 'Failed to claim prize');
+        }
+
+        const result = await res.json();
+        prizeWinId = result.prizeWinId;
+        loyaltyPagePath = result.wallet?.loyaltyPagePath || null;
+        customerAccessToken = result.wallet?.customerAccessToken || null;
+
+        document.getElementById('successMessage').textContent =
+          `Your ${result.prizeName} is ready! Show this code at the counter.`;
+        document.getElementById('redemptionCode').textContent = result.redemptionCode;
+        document.getElementById('loyaltyPageBtn').style.display = loyaltyPagePath ? 'inline-flex' : 'none';
+        document.getElementById('appleWalletBtn').style.display = isAppleWalletSupported() && customerAccessToken ? 'inline-flex' : 'none';
+        document.getElementById('googleWalletBtn').style.display = isGoogleWalletSupported() && customerAccessToken ? 'inline-flex' : 'none';
+
+        showState('successState');
+      } catch (err) {
+        document.getElementById('validationError').textContent = err.message;
+        document.getElementById('validationError').classList.remove('hidden');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Claim Prize';
+      }
+    });
+
+    // Wallet functions (placeholders for now)
+    function addToAppleWallet() {
+      if (!customerAccessToken) return;
+      window.location.href = `/api/wallet/access/${customerAccessToken}/apple-pass`;
+    }
+
+    async function addToGoogleWallet() {
+      if (!customerAccessToken) return;
+      try {
+        const res = await fetch(`/api/wallet/access/${customerAccessToken}/google-pass`);
+        const data = await res.json().catch(() => ({}));
+        if (res.ok && data.saveUrl) {
+          window.location.href = data.saveUrl;
+          return;
+        }
+        const reason = data.error || data.message || `HTTP ${res.status}`;
+        throw new Error(reason);
+      } catch (err) {
+        alert('Failed to add to Google Wallet: ' + err.message);
+      }
+    }
+
+    function openLoyaltyPage() {
+      if (!loyaltyPagePath) return;
+      window.location.href = loyaltyPagePath;
+    }
+
+    function isAppleWalletSupported() {
+      const ua = navigator.userAgent || '';
+      const isIPhone = /iPhone/i.test(ua);
+      const isSafari = /Safari/i.test(ua) && !/CriOS|FxiOS|EdgiOS/i.test(ua);
+      return isIPhone && isSafari;
+    }
+
+    function isGoogleWalletSupported() {
+      const ua = navigator.userAgent || '';
+      const isAndroid = /Android/i.test(ua);
+      return isAndroid;
+    }
+
+    // Initialize
+    loadCampaign();
+  </script>
+</body>
+</html>

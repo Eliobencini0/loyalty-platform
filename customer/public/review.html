@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leave a Review</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: clamp(12px, 4vw, 20px);
+    }
+    .container {
+      max-width: 500px;
+      width: 100%;
+      background: white;
+      border-radius: clamp(14px, 4vw, 16px);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      overflow: hidden;
+    }
+    .header {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: clamp(20px, 5vw, 24px);
+      text-align: center;
+    }
+    .header h1 {
+      font-size: clamp(22px, 6vw, 24px);
+      margin-bottom: 8px;
+      line-height: 1.15;
+      overflow-wrap: anywhere;
+    }
+    .header p { opacity: 0.9; font-size: 14px; }
+    .content { padding: clamp(24px, 6vw, 32px) clamp(16px, 5vw, 24px); }
+    .hidden { display: none; }
+
+    /* Stars */
+    .stars-container { display: flex; justify-content: center; gap: 8px; margin: 24px 0; }
+    .star {
+      width: clamp(40px, 11vw, 48px); height: clamp(40px, 11vw, 48px); cursor: pointer;
+      transition: transform 0.2s;
+      color: #ddd;
+    }
+    .star:hover { transform: scale(1.15); }
+    .star.active { color: #fbbf24; }
+    .star svg { width: 100%; height: 100%; fill: currentColor; }
+
+    .rating-label {
+      text-align: center; font-size: 16px; color: #666;
+      margin-bottom: 16px; min-height: 24px;
+    }
+
+    /* Category ratings */
+    .category-rating { margin-bottom: 20px; }
+    .category-label {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 14px; font-weight: 500; color: #333; margin-bottom: 8px;
+    }
+    .category-stars { display: flex; gap: 4px; }
+    .category-star {
+      width: 32px; height: 32px; cursor: pointer;
+      color: #ddd; transition: transform 0.15s;
+    }
+    .category-star:hover { transform: scale(1.1); }
+    .category-star.active { color: #fbbf24; }
+    .category-star svg { width: 100%; height: 100%; fill: currentColor; }
+
+    /* Form */
+    .form-group { margin-bottom: 16px; }
+    label { display: block; font-size: 14px; font-weight: 500; margin-bottom: 6px; color: #333; }
+    input, textarea {
+      width: 100%; padding: 12px; border: 1px solid #ddd;
+      border-radius: 8px; font-size: 14px; font-family: inherit;
+    }
+    input:focus, textarea:focus { outline: none; border-color: #667eea; }
+    textarea { resize: vertical; min-height: 80px; }
+    .optional { color: #999; font-weight: 400; }
+
+    .btn {
+      width: 100%; min-height: 48px; padding: 14px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white; border: none; border-radius: 8px;
+      font-size: 16px; font-weight: 600; cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+    .error { background: #fee; color: #c33; padding: 12px; border-radius: 8px; margin-bottom: 16px; font-size: 14px; }
+    .success-icon { font-size: 64px; text-align: center; margin-bottom: 16px; }
+    .success-title { font-size: 24px; font-weight: 700; text-align: center; color: #333; margin-bottom: 8px; }
+    .success-desc { text-align: center; color: #666; font-size: 16px; }
+    .loading { text-align: center; padding: 40px; color: #666; }
+    .redirect-msg { text-align: center; padding: 24px; color: #666; font-size: 16px; }
+
+    @media (max-width: 380px) {
+      .stars-container {
+        gap: 6px;
+      }
+
+      .category-stars {
+        justify-content: space-between;
+      }
+
+      .category-star {
+        width: 28px;
+        height: 28px;
+      }
+
+      .rating-label,
+      .success-desc,
+      .redirect-msg {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1 id="merchantName">Loading...</h1>
+      <p id="headerSubtitle">How was your experience?</p>
+    </div>
+    <div class="content">
+      <!-- Loading -->
+      <div id="loadingState" class="loading"><p>Loading...</p></div>
+
+      <!-- Error -->
+      <div id="errorState" class="hidden">
+        <div class="error" id="errorMessage"></div>
+        <button class="btn" onclick="window.location.reload()">Try Again</button>
+      </div>
+
+      <!-- Rating -->
+      <div id="ratingState" class="hidden">
+        <div class="rating-label" id="ratingLabel"></div>
+        <div class="stars-container" id="starsContainer"></div>
+      </div>
+
+      <!-- Detailed form (1-4 stars) -->
+      <div id="formState" class="hidden">
+        <div class="rating-label" id="formRatingLabel"></div>
+
+        <div class="category-rating">
+          <div class="category-label"><span>&#127869;</span><span id="labelFood">Food</span></div>
+          <div class="category-stars" id="foodStars"></div>
+        </div>
+        <div class="category-rating">
+          <div class="category-label"><span>&#129309;</span><span id="labelService">Service</span></div>
+          <div class="category-stars" id="serviceStars"></div>
+        </div>
+        <div class="category-rating">
+          <div class="category-label"><span>&#127912;</span><span id="labelAtmosphere">Atmosphere</span></div>
+          <div class="category-stars" id="atmosphereStars"></div>
+        </div>
+
+        <div class="form-group">
+          <label id="labelFeedback">Tell us more <span class="optional">(optional)</span></label>
+          <textarea id="feedbackText" rows="3" placeholder=""></textarea>
+        </div>
+
+        <div class="form-group">
+          <label id="labelEmail">Email <span class="optional">(optional)</span></label>
+          <input type="email" id="emailInput" placeholder="your@email.com">
+        </div>
+        <div class="form-group">
+          <label id="labelName">Name <span class="optional">(optional)</span></label>
+          <input type="text" id="nameInput" placeholder="">
+        </div>
+
+        <div id="formError" class="error hidden"></div>
+        <button class="btn" id="submitBtn" onclick="submitFeedback()">Submit Feedback</button>
+      </div>
+
+      <!-- Redirecting to Google Maps -->
+      <div id="redirectState" class="hidden">
+        <div class="redirect-msg" id="redirectMsg">Redirecting to Google Maps...</div>
+      </div>
+
+      <!-- Success -->
+      <div id="successState" class="hidden">
+        <div class="success-icon">&#128591;</div>
+        <div class="success-title" id="successTitle">Thank you!</div>
+        <div class="success-desc" id="successDesc">Your feedback helps us improve.</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var urlParts = window.location.pathname.split('/');
+    var merchantId = urlParts[urlParts.length - 1];
+
+    var config = null;
+    var selectedRating = 0;
+    var categoryRatings = { food: 0, service: 0, atmosphere: 0 };
+
+    // i18n
+    var i18n = {
+      en: {
+        subtitle: 'How was your experience?',
+        tapToRate: 'Tap a star to rate',
+        ratings: ['', 'Terrible', 'Poor', 'Average', 'Good', 'Excellent!'],
+        formTitle: 'Help us understand what happened',
+        food: 'Food', service: 'Service', atmosphere: 'Atmosphere',
+        feedbackLabel: 'Tell us more',
+        optional: '(optional)',
+        emailLabel: 'Email', namePlaceholder: 'Your name',
+        submit: 'Submit Feedback', submitting: 'Submitting...',
+        redirecting: 'Taking you to Google Maps...',
+        successTitle: 'Thank you!',
+        successDesc: 'Your feedback helps us improve.',
+        errorGeneric: 'Something went wrong. Please try again.',
+        nameLabel: 'Name',
+        textPlaceholder: 'What could we do better?',
+      },
+      it: {
+        subtitle: 'Com\'e\' stata la tua esperienza?',
+        tapToRate: 'Tocca una stella per votare',
+        ratings: ['', 'Pessima', 'Scarsa', 'Nella media', 'Buona', 'Eccellente!'],
+        formTitle: 'Aiutaci a capire cosa e\' successo',
+        food: 'Cibo', service: 'Servizio', atmosphere: 'Atmosfera',
+        feedbackLabel: 'Raccontaci di piu\'',
+        optional: '(facoltativo)',
+        emailLabel: 'Email', namePlaceholder: 'Il tuo nome',
+        submit: 'Invia Feedback', submitting: 'Invio in corso...',
+        redirecting: 'Ti portiamo su Google Maps...',
+        successTitle: 'Grazie!',
+        successDesc: 'Il tuo feedback ci aiuta a migliorare.',
+        errorGeneric: 'Qualcosa e\' andato storto. Riprova.',
+        nameLabel: 'Nome',
+        textPlaceholder: 'Cosa potremmo migliorare?',
+      },
+      es: {
+        subtitle: '\u00bfC\u00f3mo fue tu experiencia?',
+        tapToRate: 'Toca una estrella para calificar',
+        ratings: ['', 'Terrible', 'Mala', 'Regular', 'Buena', '\u00a1Excelente!'],
+        formTitle: 'Ay\u00fadanos a entender qu\u00e9 pas\u00f3',
+        food: 'Comida', service: 'Servicio', atmosphere: 'Ambiente',
+        feedbackLabel: 'Cu\u00e9ntanos m\u00e1s',
+        optional: '(opcional)',
+        emailLabel: 'Email', namePlaceholder: 'Tu nombre',
+        submit: 'Enviar Feedback', submitting: 'Enviando...',
+        redirecting: 'Llev\u00e1ndote a Google Maps...',
+        successTitle: '\u00a1Gracias!',
+        successDesc: 'Tu opini\u00f3n nos ayuda a mejorar.',
+        errorGeneric: 'Algo sali\u00f3 mal. Int\u00e9ntalo de nuevo.',
+        nameLabel: 'Nombre',
+        textPlaceholder: '\u00bfQu\u00e9 podr\u00edamos mejorar?',
+      },
+    };
+    var t = i18n.en;
+
+    function showState(name) {
+      ['loadingState','errorState','ratingState','formState','redirectState','successState']
+        .forEach(function(id) { document.getElementById(id).classList.add('hidden'); });
+      document.getElementById(name).classList.remove('hidden');
+    }
+
+    function showError(msg) {
+      document.getElementById('errorMessage').textContent = msg;
+      document.getElementById('merchantName').textContent = '';
+      document.getElementById('headerSubtitle').textContent = '';
+      showState('errorState');
+    }
+
+    var starSvg = '<svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>';
+
+    function buildStars(containerId, count, onClick) {
+      var container = document.getElementById(containerId);
+      container.innerHTML = '';
+      for (var i = 1; i <= count; i++) {
+        var star = document.createElement('div');
+        star.className = containerId === 'starsContainer' ? 'star' : 'category-star';
+        star.innerHTML = starSvg;
+        (function(idx) {
+          star.addEventListener('click', function() { onClick(idx); });
+        })(i);
+        container.appendChild(star);
+      }
+    }
+
+    function updateStars(containerId, rating) {
+      var stars = document.getElementById(containerId).children;
+      for (var i = 0; i < stars.length; i++) {
+        if (i < rating) {
+          stars[i].classList.add('active');
+        } else {
+          stars[i].classList.remove('active');
+        }
+      }
+    }
+
+    function handleMainRating(rating) {
+      selectedRating = rating;
+      updateStars('starsContainer', rating);
+      document.getElementById('ratingLabel').textContent = t.ratings[rating];
+
+      setTimeout(function() {
+        if (rating === 5) {
+          handleFiveStar();
+        } else {
+          showDetailedForm();
+        }
+      }, 400);
+    }
+
+    function handleFiveStar() {
+      showState('redirectState');
+      document.getElementById('redirectMsg').textContent = t.redirecting;
+
+      fetch('/api/feedback/' + merchantId + '/google-redirect', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rating: 5 }),
+      })
+        .then(function(res) { return res.json(); })
+        .then(function(data) {
+          if (data.redirectUrl) {
+            window.location.href = data.redirectUrl;
+          } else {
+            showState('successState');
+            document.getElementById('successTitle').textContent = t.successTitle;
+            document.getElementById('successDesc').textContent = t.successDesc;
+          }
+        })
+        .catch(function() {
+          showState('successState');
+          document.getElementById('successTitle').textContent = t.successTitle;
+          document.getElementById('successDesc').textContent = t.successDesc;
+        });
+    }
+
+    function showDetailedForm() {
+      document.getElementById('formRatingLabel').textContent = t.formTitle;
+      document.getElementById('labelFood').textContent = t.food;
+      document.getElementById('labelService').textContent = t.service;
+      document.getElementById('labelAtmosphere').textContent = t.atmosphere;
+      document.getElementById('labelFeedback').innerHTML = t.feedbackLabel + ' <span class="optional">' + t.optional + '</span>';
+      document.getElementById('labelEmail').innerHTML = t.emailLabel + ' <span class="optional">' + t.optional + '</span>';
+      document.getElementById('labelName').innerHTML = t.nameLabel + ' <span class="optional">' + t.optional + '</span>';
+      document.getElementById('feedbackText').placeholder = t.textPlaceholder;
+      document.getElementById('nameInput').placeholder = t.namePlaceholder;
+      document.getElementById('submitBtn').textContent = t.submit;
+
+      buildStars('foodStars', 5, function(r) { categoryRatings.food = r; updateStars('foodStars', r); });
+      buildStars('serviceStars', 5, function(r) { categoryRatings.service = r; updateStars('serviceStars', r); });
+      buildStars('atmosphereStars', 5, function(r) { categoryRatings.atmosphere = r; updateStars('atmosphereStars', r); });
+
+      showState('formState');
+    }
+
+    function submitFeedback() {
+      var btn = document.getElementById('submitBtn');
+      var errorEl = document.getElementById('formError');
+      errorEl.classList.add('hidden');
+      btn.disabled = true;
+      btn.textContent = t.submitting;
+
+      var body = {
+        rating: selectedRating,
+        foodRating: categoryRatings.food || undefined,
+        serviceRating: categoryRatings.service || undefined,
+        atmosphereRating: categoryRatings.atmosphere || undefined,
+        text: document.getElementById('feedbackText').value || undefined,
+        email: document.getElementById('emailInput').value || undefined,
+        firstName: document.getElementById('nameInput').value || undefined,
+      };
+
+      fetch('/api/feedback/' + merchantId, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      })
+        .then(function(res) {
+          if (!res.ok) {
+            return res.json().then(function(err) { throw new Error(err.error || t.errorGeneric); });
+          }
+          return res.json();
+        })
+        .then(function() {
+          showState('successState');
+          document.getElementById('successTitle').textContent = t.successTitle;
+          document.getElementById('successDesc').textContent = t.successDesc;
+        })
+        .catch(function(err) {
+          errorEl.textContent = err.message;
+          errorEl.classList.remove('hidden');
+          btn.disabled = false;
+          btn.textContent = t.submit;
+        });
+    }
+
+    function init() {
+      fetch('/api/feedback/' + merchantId + '/config')
+        .then(function(res) {
+          if (!res.ok) throw new Error('Merchant not found');
+          return res.json();
+        })
+        .then(function(data) {
+          config = data;
+
+          // Apply locale
+          var locale = config.locale || 'en';
+          t = i18n[locale] || i18n.en;
+          document.documentElement.lang = locale;
+
+          document.getElementById('merchantName').textContent = config.merchantName;
+          document.getElementById('headerSubtitle').textContent = t.subtitle;
+          document.getElementById('ratingLabel').textContent = t.tapToRate;
+
+          buildStars('starsContainer', 5, handleMainRating);
+          showState('ratingState');
+        })
+        .catch(function(err) {
+          showError(err.message || 'Failed to load');
+        });
+    }
+
+    init();
+  </script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+/* Reset and global typography */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--background-page);
+  color: var(--text-primary);
+  line-height: var(--leading-normal);
+  font-size: var(--text-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  color: var(--interactive-default);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+}
+
+h1 { font-size: var(--text-2xl); font-weight: var(--weight-bold); line-height: 40px; letter-spacing: -0.02em; }
+h2 { font-size: var(--text-xl); font-weight: var(--weight-semibold); line-height: 32px; letter-spacing: -0.01em; }
+h3 { font-size: var(--text-lg); font-weight: var(--weight-semibold); line-height: 28px; }
+h4 { font-size: var(--text-base); font-weight: var(--weight-semibold); line-height: 24px; }

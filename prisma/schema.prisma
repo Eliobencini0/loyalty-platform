@@ -1,0 +1,445 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Merchants ───────────────────────────────────────────────
+
+model Merchant {
+  id              String       @id @default(uuid())
+  name            String
+  email           String       @unique
+  phone           String?
+  address         String?
+  city            String?
+  country         String?
+  plan            MerchantPlan @default(FREE)
+  settings        String       @default("{}")
+  preferredLocale Locale       @default(en) @map("preferred_locale")
+  active          Boolean      @default(true)
+  createdAt       DateTime     @default(now()) @map("created_at")
+  updatedAt       DateTime     @updatedAt @map("updated_at")
+
+  passwordHash String? @map("password_hash")
+
+  loyaltyCards          LoyaltyCard[]
+  cardTemplates         CardTemplate[]
+  loyaltyProgram        LoyaltyProgram?
+  feedbacks             MerchantFeedback[]
+  gamificationCampaigns GamificationCampaign[]
+  pushSubscriptions     PushSubscription[]
+  apiKeys               ApiKey[]
+
+  @@map("merchants")
+}
+
+enum MerchantPlan {
+  FREE
+  STARTER
+  PROFESSIONAL
+  ENTERPRISE
+}
+
+enum Locale {
+  en
+  it
+  es
+}
+
+// ─── Customers ───────────────────────────────────────────────
+
+model Customer {
+  id                String    @id @default(uuid())
+  email             String    @unique
+  firstName         String    @map("first_name")
+  lastName          String?   @map("last_name")
+  phone             String?
+  dateOfBirth       DateTime? @map("date_of_birth")
+  avatarUrl         String?   @map("avatar_url")
+  acquisitionSource String?   @map("acquisition_source")
+  preferredLocale   Locale    @default(en) @map("preferred_locale")
+  createdAt         DateTime  @default(now()) @map("created_at")
+  updatedAt         DateTime  @updatedAt @map("updated_at")
+
+  loyaltyCards LoyaltyCard[]
+  feedbacks    MerchantFeedback[]
+  prizeWins    PrizeWin[]
+
+  @@map("customers")
+}
+
+// ─── Loyalty Cards ───────────────────────────────────────────
+
+model LoyaltyCard {
+  id             String            @id @default(uuid())
+  cardNumber     String            @unique @map("card_number")
+  merchantId     String            @map("merchant_id")
+  customerId     String            @map("customer_id")
+  cardTemplateId String?           @map("card_template_id")
+  status         LoyaltyCardStatus @default(ACTIVE)
+  pointsBalance  Int               @default(0) @map("points_balance")
+  totalEarned    Int               @default(0) @map("total_earned")
+  totalRedeemed  Int               @default(0) @map("total_redeemed")
+  issuedAt       DateTime          @default(now()) @map("issued_at")
+  expiresAt      DateTime?         @map("expires_at")
+  gdprConsentAt        DateTime? @map("gdpr_consent_at")
+  marketingConsentAt   DateTime? @map("marketing_consent_at")
+  marketingRevokedAt   DateTime? @map("marketing_revoked_at")
+  enrollmentSource     EnrollmentSource @default(SELF_JOIN) @map("enrollment_source")
+  createdAt      DateTime          @default(now()) @map("created_at")
+  updatedAt      DateTime          @updatedAt @map("updated_at")
+
+  merchant     Merchant            @relation(fields: [merchantId], references: [id])
+  customer     Customer            @relation(fields: [customerId], references: [id])
+  cardTemplate CardTemplate?       @relation(fields: [cardTemplateId], references: [id])
+  transactions PointsTransaction[]
+  prizeWins    PrizeWin[]
+  walletPasses WalletPass[]
+
+  @@unique([merchantId, customerId])
+  @@index([merchantId])
+  @@index([customerId])
+  @@map("loyalty_cards")
+}
+
+enum EnrollmentSource {
+  SELF_JOIN
+  MERCHANT_MANUAL
+}
+
+enum LoyaltyCardStatus {
+  ACTIVE
+  SUSPENDED
+  EXPIRED
+  CANCELLED
+}
+
+// ─── Card Templates / Tiers ──────────────────────────────────
+
+model CardTemplate {
+  id                String   @id @default(uuid())
+  merchantId        String   @map("merchant_id")
+  name              String
+  description       String?
+  tier              CardTier @default(STANDARD)
+  pointsPerCurrency Decimal  @default(1) @map("points_per_currency") 
+  redemptionRate    Decimal  @default(0.01) @map("redemption_rate") 
+  minRedeemPoints   Int      @default(100) @map("min_redeem_points")
+  bonusMultiplier   Decimal  @default(1) @map("bonus_multiplier") 
+  validityDays      Int?     @map("validity_days")
+  active            Boolean  @default(true)
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  merchant     Merchant      @relation(fields: [merchantId], references: [id])
+  loyaltyCards LoyaltyCard[]
+
+  @@index([merchantId])
+  @@map("card_templates")
+}
+
+enum CardTier {
+  STANDARD
+  SILVER
+  GOLD
+  PLATINUM
+}
+
+// ─── Points Transactions ─────────────────────────────────────
+
+model PointsTransaction {
+  id            String                @id @default(uuid())
+  loyaltyCardId String                @map("loyalty_card_id")
+  type          PointsTransactionType
+  points        Int
+  balanceAfter  Int                   @map("balance_after")
+  description   String?
+  referenceId   String?               @map("reference_id")
+  createdAt     DateTime              @default(now()) @map("created_at")
+
+  loyaltyCard LoyaltyCard @relation(fields: [loyaltyCardId], references: [id])
+
+  @@index([loyaltyCardId])
+  @@index([createdAt])
+  @@index([loyaltyCardId, createdAt(sort: Desc)]) // For transaction history queries
+  @@map("points_transactions")
+}
+
+enum PointsTransactionType {
+  EARN
+  REDEEM
+  ADJUST
+  EXPIRE
+  BONUS
+}
+
+// ─── Loyalty Programs ────────────────────────────────────────
+
+model LoyaltyProgram {
+  id                String             @id @default(uuid())
+  merchantId        String             @unique @map("merchant_id")
+  type              LoyaltyProgramType
+  goalStamps        Int?               @map("goal_stamps")
+  welcomeStamps     Int?               @map("welcome_stamps")
+  welcomePoints     Int?               @map("welcome_points")
+  pointsPerCurrency Decimal?           @map("points_per_currency")
+  active            Boolean            @default(true)
+  createdAt         DateTime           @default(now()) @map("created_at")
+  updatedAt         DateTime           @updatedAt @map("updated_at")
+
+  merchant    Merchant     @relation(fields: [merchantId], references: [id])
+  rewardTiers RewardTier[]
+
+  @@map("loyalty_programs")
+}
+
+enum LoyaltyProgramType {
+  POINTS
+  STAMPS
+}
+
+model RewardTier {
+  id               String   @id @default(uuid())
+  loyaltyProgramId String   @map("loyalty_program_id")
+  name             String
+  threshold        Int
+  rewardName       String   @map("reward_name")
+  sortOrder        Int      @default(0) @map("sort_order")
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  loyaltyProgram LoyaltyProgram @relation(fields: [loyaltyProgramId], references: [id], onDelete: Cascade)
+
+  @@index([loyaltyProgramId])
+  @@map("reward_tiers")
+}
+
+// ─── Merchant Feedback ──────────────────────────────────────
+
+model MerchantFeedback {
+  id         String          @id @default(uuid())
+  merchantId String          @map("merchant_id")
+  customerId String?         @map("customer_id")
+  rating     Int
+  text       String
+
+  // Detailed ratings (optional, for review flow)
+  foodRating       Int?           @map("food_rating")
+  serviceRating    Int?           @map("service_rating")
+  atmosphereRating Int?           @map("atmosphere_rating")
+  source           FeedbackSource @default(DIRECT)
+
+  readAt     DateTime? @map("read_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+
+  merchant Merchant  @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  customer Customer? @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@index([merchantId, createdAt])
+  @@index([customerId])
+  @@index([source])
+  @@index([merchantId, readAt, createdAt(sort: Desc)]) // For unread feedback queries
+  @@map("merchant_feedback")
+}
+
+enum FeedbackSource {
+  DIRECT        // Review flow interno (rating 1-4)
+  GOOGLE_MAPS   // Tracked redirect (rating 5)
+  OTHER         // Future use
+}
+
+// ─── Gamification Campaigns ──────────────────────────────────
+
+model GamificationCampaign {
+  id          String    @id @default(uuid())
+  merchantId  String    @map("merchant_id")
+  name        String
+  description String?
+  gameType    GameType  @map("game_type")
+  active      Boolean   @default(true)
+  startDate   DateTime? @map("start_date")
+  endDate     DateTime? @map("end_date")
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  merchant  Merchant   @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  prizes    Prize[]
+  prizeWins PrizeWin[]
+
+  @@index([merchantId])
+  @@index([active])
+  @@index([merchantId, active]) // For active campaigns queries
+  @@map("gamification_campaigns")
+}
+
+enum GameType {
+  SCRATCH_CARD
+  SPIN_WHEEL
+}
+
+// ─── Prizes ──────────────────────────────────────────────────
+
+model Prize {
+  id           String    @id @default(uuid())
+  campaignId   String    @map("campaign_id")
+  name         String
+  description  String?
+  prizeType    PrizeType @map("prize_type")
+  prizeValue   String?   @map("prize_value")
+  probability  Int
+  validityDays Int       @default(7) @map("validity_days")
+  imageUrl     String?   @map("image_url")
+  active       Boolean   @default(true)
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+
+  campaign  GamificationCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  prizeWins PrizeWin[]
+
+  @@index([campaignId])
+  @@map("prizes")
+}
+
+enum PrizeType {
+  PHYSICAL
+  DIGITAL
+}
+
+// ─── Prize Wins ──────────────────────────────────────────────
+
+model PrizeWin {
+  id             String      @id @default(uuid())
+  campaignId     String      @map("campaign_id")
+  prizeId        String      @map("prize_id")
+  customerId     String      @map("customer_id")
+  loyaltyCardId  String?     @map("loyalty_card_id")
+  status         PrizeStatus @default(PENDING)
+  redemptionCode String      @unique @map("redemption_code")
+  wonAt          DateTime    @default(now()) @map("won_at")
+  redeemedAt     DateTime?   @map("redeemed_at")
+  expiresAt      DateTime    @map("expires_at")
+  createdAt      DateTime    @default(now()) @map("created_at")
+  updatedAt      DateTime    @updatedAt @map("updated_at")
+
+  campaign    GamificationCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  prize       Prize                @relation(fields: [prizeId], references: [id])
+  customer    Customer             @relation(fields: [customerId], references: [id])
+  loyaltyCard LoyaltyCard?         @relation(fields: [loyaltyCardId], references: [id])
+
+  @@unique([campaignId, customerId])
+  @@index([campaignId])
+  @@index([customerId])
+  @@index([status])
+  @@index([redemptionCode])
+  @@map("prize_wins")
+}
+
+enum PrizeStatus {
+  PENDING
+  REDEEMED
+  EXPIRED
+}
+
+model WalletPass {
+  id               String           @id @default(uuid())
+  loyaltyCardId    String           @map("loyalty_card_id")
+  provider         WalletProvider
+  providerPassId   String?          @map("provider_pass_id")
+  status           WalletPassStatus @default(ACTIVE)
+  lastSnapshotHash String?          @map("last_snapshot_hash")
+  lastIssuedAt     DateTime?        @map("last_issued_at")
+  createdAt        DateTime         @default(now()) @map("created_at")
+  updatedAt        DateTime         @updatedAt @map("updated_at")
+
+  loyaltyCard       LoyaltyCard        @relation(fields: [loyaltyCardId], references: [id], onDelete: Cascade)
+  scanTokens        WalletScanToken[]
+  accessTokens      WalletAccessToken[]
+
+  @@unique([loyaltyCardId, provider])
+  @@index([loyaltyCardId])
+  @@index([status])
+  @@map("wallet_passes")
+}
+
+enum WalletProvider {
+  APPLE_WALLET
+  GOOGLE_WALLET
+}
+
+enum WalletPassStatus {
+  ACTIVE
+  INACTIVE
+  REVOKED
+}
+
+model WalletScanToken {
+  id           String    @id @default(uuid())
+  walletPassId String    @map("wallet_pass_id")
+  token        String    @unique
+  active       Boolean   @default(true)
+  createdAt    DateTime  @default(now()) @map("created_at")
+  revokedAt    DateTime? @map("revoked_at")
+
+  walletPass WalletPass @relation(fields: [walletPassId], references: [id], onDelete: Cascade)
+
+  @@index([walletPassId])
+  @@index([active])
+  @@map("wallet_scan_tokens")
+}
+
+model WalletAccessToken {
+  id           String    @id @default(uuid())
+  walletPassId String    @map("wallet_pass_id")
+  token        String    @unique
+  active       Boolean   @default(true)
+  createdAt    DateTime  @default(now()) @map("created_at")
+  revokedAt    DateTime? @map("revoked_at")
+
+  walletPass WalletPass @relation(fields: [walletPassId], references: [id], onDelete: Cascade)
+
+  @@index([walletPassId])
+  @@index([active])
+  @@map("wallet_access_tokens")
+}
+
+// ─── Push Notifications (PWA) ────────────────────────────────
+
+model PushSubscription {
+  id         String   @id @default(uuid())
+  merchantId String   @map("merchant_id")
+  endpoint   String   @unique
+  keys       Json     // { p256dh, auth }
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now()) @map("created_at")
+  lastUsedAt DateTime @updatedAt @map("last_used_at")
+
+  merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  @@index([merchantId])
+  @@index([merchantId, active])
+  @@map("push_subscriptions")
+}
+
+// ─── API Keys (Merchant Authentication) ──────────────────────
+
+model ApiKey {
+  id         String    @id @default(uuid())
+  merchantId String    @map("merchant_id")
+  keyHash    String    @map("key_hash") // bcrypt hash of the API key
+  name       String    @default("Default API Key") // Descriptive name
+  active     Boolean   @default(true)
+  lastUsedAt DateTime? @map("last_used_at")
+  expiresAt  DateTime? @map("expires_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+
+  merchant Merchant @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  @@index([merchantId])
+  @@index([merchantId, active])
+  @@map("api_keys")
+}
