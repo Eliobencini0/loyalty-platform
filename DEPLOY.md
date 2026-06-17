@@ -57,6 +57,33 @@ Da valutare: cold start, niente stato in RAM tra invocazioni, eventuali path su 
 
 Parti con **Opzione A**: zero refactor dell'API, tutto live in mezza giornata, $0. Se più avanti vuoi consolidare su Vercel solo, migri all'Opzione B.
 
+---
+
+## 🚀 Deploy scelto: Render (Blueprint `render.yaml`)
+
+Tutto lo stack con un solo "Apply". Il file `render.yaml` provisiona:
+- **loyalty-db** — Postgres free (⚠️ cancellato dopo 30 giorni — per persistenza usa Neon, vedi sotto)
+- **loyalty-api** — web service Docker: Express API + dashboard (`/dashboard`) + pagine customer (`/app/*`)
+- **loyalty-marketing** — static site (CDN, sempre acceso): sito Next.js
+
+### Passi (solo questi sono manuali — il resto è automatico)
+1. Vai su **https://render.com** → registrati con **GitHub** (free, niente carta).
+2. **New → Blueprint** → autorizza e seleziona il repo **`Eliobencini0/loyalty-platform`**.
+3. Render legge `render.yaml` → **Apply**. Crea DB + API + marketing e cabla `DATABASE_URL` da solo.
+4. Aspetta il build (~5-10 min la prima volta). Ottieni due URL:
+   - App/dashboard → `https://loyalty-api.onrender.com/dashboard/`
+   - Marketing → `https://loyalty-marketing.onrender.com`
+5. Le migrazioni Prisma girano da sole all'avvio (`CMD` del Dockerfile). Per i dati demo, dalla shell del servizio `loyalty-api`: `npm run db:seed` (facoltativo, NON in produzione vera).
+
+### Limiti del free su Render (da sapere)
+- Il **web service** (API+dashboard) **si addormenta dopo ~15 min** di inattività → primo accesso lento (~30-60s). Il marketing (static) **non dorme mai**.
+- Il **Postgres free scade a 30 giorni**. Per un DB persistente: crea un progetto free su **https://neon.tech**, copia la *pooled connection string*, e in `render.yaml` sostituisci il blocco `fromDatabase` con `sync: false` incollando la stringa nelle env del servizio. (rimuovi anche il blocco `databases:`)
+
+### Nota cross-dominio
+Marketing e app stanno su due URL diversi: i link "Inizia/Signup" del marketing puntano a `/dashboard/...` → vanno fatti puntare all'URL dell'API quando lo conosci (`marketing/src/lib/contact.ts` / link nelle pagine). Per ora dashboard e API condividono la stessa origine, quindi il login funziona senza CORS.
+
+---
+
 ## Pre-flight checklist (prima di andare live)
 - [ ] `npm audit` — ci sono vulnerabilità note (root + dashboard); valutare `npm audit fix`.
 - [ ] `vite-plugin-pwa` non supporta Vite 8 → oggi install con `--legacy-peer-deps`. Bumpare il plugin o pinnare Vite prima del deploy.

@@ -87,11 +87,15 @@ app.get("/favicon.ico", (_req, res) => {
   });
 });
 
-// Serve the marketing website at root /
-const marketingPath = path.join(process.cwd(), "marketing");
+// Serve the marketing website at root / (Next.js static export → marketing/out).
+// When the export isn't bundled (e.g. marketing is deployed separately as a
+// static site), gracefully fall back to the dashboard instead of erroring.
+const marketingPath = path.join(process.cwd(), "marketing/out");
 app.use(express.static(marketingPath));
 app.get("*", (_req, res) => {
-  res.sendFile(path.join(marketingPath, "index.html"));
+  res.sendFile(path.join(marketingPath, "index.html"), (err) => {
+    if (err && !res.headersSent) res.redirect("/dashboard/");
+  });
 });
 
 // Error handler (must be last)

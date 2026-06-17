@@ -1,0 +1,44 @@
+# Render Blueprint — deploy the whole stack with one "Apply".
+# Docs: https://render.com/docs/blueprint-spec
+#
+# Provisions:
+#   - loyalty-db        : Postgres (free)      → DATABASE_URL auto-wired
+#   - loyalty-api       : Docker web service   → Express API + /dashboard + /app/*
+#   - loyalty-marketing : static site (CDN)    → Next.js marketing, always-on
+#
+# NOTE: Render's FREE Postgres is deleted after 30 days. For a persistent DB,
+# create a free project on https://neon.tech and replace the DATABASE_URL below
+# with its pooled connection string (set the env var to sync:false and paste it).
+
+databases:
+  - name: loyalty-db
+    plan: free
+    databaseName: loyalty_platform
+    user: loyalty
+
+services:
+  # ---- Backend API + merchant dashboard + customer pages (Docker) ----
+  - type: web
+    name: loyalty-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: loyalty-db
+          property: connectionString
+      - key: NODE_ENV
+        value: production
+      - key: CORS_ORIGIN
+        value: "*"
+      # PORT is injected by Render automatically; the server reads process.env.PORT.
+
+  # ---- Marketing website (Next.js static export) ----
+  - type: web
+    name: loyalty-marketing
+    runtime: static
+    rootDir: marketing
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./out

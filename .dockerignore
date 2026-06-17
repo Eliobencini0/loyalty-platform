@@ -1,0 +1,12 @@
+node_modules
+dashboard/node_modules
+dashboard/dist
+marketing/node_modules
+marketing/.next
+marketing/out
+dist
+.git
+.env
+*.log
+.claude
+qa-artifacts
