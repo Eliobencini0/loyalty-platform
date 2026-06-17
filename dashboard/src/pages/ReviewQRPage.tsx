@@ -13,7 +13,7 @@ export default function ReviewQRPage() {
 
   // In dev, Vite runs on 5173 but /app/* is served by the Express backend on 3000.
   const apiOrigin = ['5173', '5174', '5175'].includes(window.location.port)
-    ? 'http://localhost:3000'
+    ? 'http://localhost:3001'
     : window.location.origin;
   const reviewUrl = `${apiOrigin}/app/review/${merchant?.id}`;
 

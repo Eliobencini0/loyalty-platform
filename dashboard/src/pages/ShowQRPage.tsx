@@ -28,7 +28,7 @@ export default function ShowQRPage() {
 
   // In development, Vite runs on different port than backend
   const apiOrigin = window.location.port === '5174' || window.location.port === '5173' || window.location.port === '5175'
-    ? 'http://localhost:3000'
+    ? 'http://localhost:3001'
     : window.location.origin;
   const route = hasActiveCampaign ? 'play' : 'join';
   const signupUrl = `${apiOrigin}/app/${route}/${merchant?.id}`;
