@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { DASHBOARD_SIGNUP_URL } from '@/lib/urls';
 
 /**
  * /signup/ now redirects to the dashboard signup flow.
@@ -8,7 +9,7 @@ import { useEffect } from 'react';
  */
 export default function SignupRedirect() {
   useEffect(() => {
-    window.location.replace('/dashboard/signup');
+    window.location.replace(DASHBOARD_SIGNUP_URL);
   }, []);
 
   return (
@@ -25,7 +26,7 @@ export default function SignupRedirect() {
     >
       <noscript>
         <p>
-          <a href="/dashboard/signup">Continue to signup</a>
+          <a href={DASHBOARD_SIGNUP_URL}>Continue to signup</a>
         </p>
       </noscript>
     </div>

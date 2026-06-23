@@ -3,3 +3,4 @@ node_modules/
 out/
 src/app/tokens.css
 next-env.d.ts
+.env*.local

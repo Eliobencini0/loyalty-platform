@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { useTranslations } from 'next-intl';
+import { DASHBOARD_SIGNUP_URL } from '@/lib/urls';
 
 export default function HomePage() {
   const t = useTranslations();
@@ -86,7 +87,7 @@ export default function HomePage() {
               {t('hero.ctaSecondary')}
             </a>
             <div className="hero-primary-group">
-              <a href="/dashboard/signup" className="btn-hero btn-hero-primary">
+              <a href={DASHBOARD_SIGNUP_URL} className="btn-hero btn-hero-primary">
                 {t('hero.ctaPrimary')}
               </a>
               <p className="hero-trust">
@@ -213,7 +214,7 @@ export default function HomePage() {
               <li>{t('pricing.core.feature5')}</li>
               <li>{t('pricing.core.feature6')}</li>
             </ul>
-            <a href="/dashboard/signup" className="pricing-cta">{t('pricing.core.cta')}</a>
+            <a href={DASHBOARD_SIGNUP_URL} className="pricing-cta">{t('pricing.core.cta')}</a>
           </div>
 
           <div className="pricing-card featured reveal-stagger delay-2">
@@ -230,7 +231,7 @@ export default function HomePage() {
               <li>{t('pricing.grow.feature5')}</li>
               <li>{t('pricing.grow.feature6')}</li>
             </ul>
-            <a href="/dashboard/signup" className="pricing-cta">{t('pricing.grow.cta')}</a>
+            <a href={DASHBOARD_SIGNUP_URL} className="pricing-cta">{t('pricing.grow.cta')}</a>
           </div>
         </div>
       </section>
@@ -244,7 +245,7 @@ export default function HomePage() {
       <section className="cta-section reveal">
         <h2>{t('finalCta.title')}</h2>
         <p>{t('finalCta.body')}</p>
-        <a href="/dashboard/signup" className="btn-cta">{t('finalCta.button')}</a>
+        <a href={DASHBOARD_SIGNUP_URL} className="btn-cta">{t('finalCta.button')}</a>
         <p className="cta-trust">{t('finalCta.trust')}</p>
       </section>
     </>
