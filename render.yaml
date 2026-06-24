@@ -42,3 +42,9 @@ services:
     rootDir: marketing
     buildCommand: npm install && npm run build
     staticPublishPath: ./out
+    envVars:
+      # Marketing and dashboard live on SEPARATE Render hosts, so the
+      # "Accedi"/"Signup" links must be absolute. Inlined at build time
+      # (NEXT_PUBLIC_* in a static export) → redeploy after changing.
+      - key: NEXT_PUBLIC_DASHBOARD_URL
+        value: https://loyalty-api-gav0.onrender.com

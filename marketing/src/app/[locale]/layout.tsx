@@ -7,6 +7,7 @@ import LanguageSwitcher from '@/components/LanguageSwitcher';
 import FloatingWhatsApp from '@/components/FloatingWhatsApp';
 import NewsletterSignup from '@/components/NewsletterSignup';
 import { FOOTER_EMAIL, FOOTER_PHONE, FOOTER_LOCATION } from '@/lib/contact';
+import { DASHBOARD_LOGIN_URL, DASHBOARD_SIGNUP_URL } from '@/lib/urls';
 import "../globals.css";
 
 export function generateStaticParams() {
@@ -215,8 +216,8 @@ export default async function LocaleLayout({ children, params }: Props) {
             </div>
             <div className="nav-actions">
               <LanguageSwitcher />
-              <a href="/dashboard/" className="nav-link-secondary">{t('nav.login')}</a>
-              <a href="/dashboard/signup" className="nav-cta">{t('nav.cta')}</a>
+              <a href={DASHBOARD_LOGIN_URL} className="nav-link-secondary">{t('nav.login')}</a>
+              <a href={DASHBOARD_SIGNUP_URL} className="nav-cta">{t('nav.cta')}</a>
             </div>
           </nav>
 
